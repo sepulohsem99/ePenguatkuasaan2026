@@ -44,6 +44,12 @@
   --gold-2:#4886B0;
   --red:#3F3886;
   --yellow:#729FBB;
+  /* aksen biru — sebelum ini DIRUJUK tetapi TIADA definisi (bug) */
+  --biru:#24538A;
+  --biru-muda:#3078A8;
+  --biru-cerah:#5AA7DC;
+  /* warna pautan remah — dilaras untuk lulus WCAG AA pada latar gelap */
+  --remah-pautan:#8FC7F0;
 
   --radius:22px;
   --radius-sm:13px;
@@ -59,6 +65,9 @@
 html[data-tema="gelap"]{
   color-scheme:dark;
   --teks:#FFFFFF;
+  --teks-1:#FFFFFF;
+  --dd-bg:rgba(15,26,58,.97);
+  --dd-item-hover:rgba(255,255,255,.09);
   --teks-2:rgba(255,255,255,.76);
   --teks-3:rgba(255,255,255,.50);
   --teks-4:rgba(255,255,255,.30);
@@ -91,11 +100,18 @@ html[data-tema="gelap"]{
 html[data-tema="cerah"]{
   color-scheme:light;
   --teks:#09102A;
+  --teks-1:#09102A;
+  --dd-bg:#FFFFFF;
+  --dd-item-hover:rgba(18,30,74,.07);
   --teks-2:rgba(9, 16, 42,.76);
   --teks-3:rgba(9, 16, 42,.52);
   --teks-4:rgba(9, 16, 42,.28);
   --ikon:rgba(9, 16, 42,.56);
   --emas-teks:#184A6E;
+  --biru:#184A6E;
+  --biru-muda:#266086;
+  --biru-cerah:#2C6BA8;
+  --remah-pautan:#1F5A8C;
 
   --kad-bg-1:rgba(255,255,255,.86);
   --kad-bg-2:rgba(255,255,255,.66);
@@ -681,15 +697,35 @@ html[data-tema="cerah"]{
 
 .bar-atas{
   position:sticky;top:0;z-index:20;
-  display:flex;align-items:center;gap:14px;
+  display:flex;align-items:center;gap:14px;justify-content:flex-end;
   padding:12px clamp(18px,3vw,32px);
   background:var(--kad-bg-1);
   border-bottom:1px solid var(--permukaan-brd);
   -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
 }
-.bar-atas .kedudukan{display:flex;align-items:center;gap:8px;font-size:12.6px;color:var(--teks-3);min-width:0}
-.bar-atas .kedudukan b{color:var(--teks-2);font-weight:600}
-.bar-atas .kedudukan .pisah{opacity:.5}
+
+/* ---------- REMAH NAVIGASI (breadcrumb) ----------
+   Dikongsi oleh bar atas portal (.kedudukan) dan bar atas modul (.mp-crumb).
+   Level ada destinasi = pautan; item terakhir = halaman semasa (tak diklik). */
+.remah{display:flex;align-items:center;gap:6px;font-size:12.6px;color:var(--teks-3);
+  min-width:0;flex-wrap:wrap}
+/* Remah berada DALAM kandungan, tepat bawah blok tajuk (.kepala). Tarik sikit
+   ke atas supaya rapat dengan tajuk, dan beri ruang sebelum kandungan. */
+.remah.kedudukan,.remah.mp-crumb{margin:-8px 0 14px}
+.remah .pisah{font-style:normal;opacity:.42;user-select:none;margin:0 1px}
+/* Pautan remah mesti NAMPAK boleh klik (affordance): warna pautan + garis
+   bawah halus. Item terakhir (halaman semasa) kekal teks pejal. */
+.remah a{color:var(--remah-pautan);text-decoration:underline;
+  text-decoration-color:color-mix(in srgb, currentColor 42%, transparent);
+  text-decoration-thickness:1px;text-underline-offset:2.5px;
+  padding:2px 7px;margin:-2px -1px;border-radius:7px;
+  transition:color .15s ease,background-color .15s ease,text-decoration-color .15s ease}
+.remah a:hover{color:var(--emas-teks);background:var(--kad-bg-2);
+  text-decoration-color:currentColor;text-decoration-thickness:1.5px}
+.remah a:focus-visible{outline:2px solid var(--biru-cerah);outline-offset:1px;
+  color:var(--emas-teks);text-decoration-color:currentColor}
+.remah span{color:var(--teks-3)}
+.remah [aria-current="page"]{color:var(--teks);font-weight:700}
 .bar-atas .kanan{margin-left:auto;display:flex;align-items:center;gap:9px}
 
 .cip-atas{
@@ -1144,7 +1180,6 @@ html[data-tema="gelap"] .pnt-ik{background:color-mix(in srgb,var(--accent-pantas
 }
 @media (max-width:720px){
   .bar-atas{flex-wrap:wrap;gap:10px}
-  .bar-atas .kedudukan{order:2;width:100%;font-size:12px}
   .cip-atas .nama{display:none}
   .cip-atas{padding:7px 11px}
 }
@@ -1171,7 +1206,7 @@ html[data-tema="gelap"] .pnt-ik{background:color-mix(in srgb,var(--accent-pantas
 ================================================================== */
 
 /* ---- kepala halaman ---- */
-.kepala{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.kepala{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:14px}
 .kepala .tt{min-width:0}
 .kepala .hello2{margin:0 0 6px;font-size:11.4px;letter-spacing:.2em;text-transform:uppercase;color:var(--emas-teks);font-weight:700}
 .kepala h1{margin:0;font-size:clamp(20px,2.3vw,26px);font-weight:800;letter-spacing:-.02em}
@@ -1243,7 +1278,7 @@ table.jadual{width:100%;border-collapse:separate;border-spacing:0;font-size:12.8
 table.jadual thead th{
   position:sticky;top:0;z-index:3;
   background:var(--tbl-kepala);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  text-align:left;padding:11px 13px;font-size:11.2px;font-weight:700;
+  text-align:left;padding:10px 8px;font-size:11.2px;font-weight:700;
   letter-spacing:.06em;text-transform:uppercase;color:var(--teks-3);
   border-bottom:1px solid var(--permukaan-brd);white-space:nowrap;
 }
@@ -1255,7 +1290,7 @@ table.jadual thead th.sortir::after{
 }
 table.jadual thead th.sortir[data-arah="naik"]::after{content:'↑';opacity:1;color:var(--gold-2)}
 table.jadual thead th.sortir[data-arah="turun"]::after{content:'↓';opacity:1;color:var(--gold-2)}
-table.jadual tbody td{padding:11px 13px;border-bottom:1px solid var(--brd-lembut);color:var(--teks-2);vertical-align:middle}
+table.jadual tbody td{padding:9px 8px;border-bottom:1px solid var(--brd-lembut);color:var(--teks-2);vertical-align:middle}
 table.jadual tbody tr:nth-child(odd) td{background:var(--tbl-selang)}
 table.jadual tbody tr:nth-child(even) td{background:transparent}
 table.jadual tbody tr:hover td{background:var(--tbl-hover)}
@@ -1287,6 +1322,42 @@ input[type="checkbox"].tick{
   background:var(--kod-bg);border:1px solid var(--brd-lembut);
   font-variant-numeric:tabular-nums;
 }
+
+  /* --- butang eksport: SATU butang + menu turun (gaya rujukan user) --- */
+  .eksport-butang{position:relative;display:inline-block}
+  .btn-eksport{
+    appearance:none;cursor:pointer;font-family:inherit;font-size:12.6px;font-weight:700;
+    padding:9px 13px 9px 12px;border-radius:999px;border:0;color:#fff;
+    background:linear-gradient(135deg,var(--biru-muda) 0%,var(--biru) 100%);
+    box-shadow:0 6px 16px rgba(36,83,138,.30);
+    display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+    transition:transform .15s,filter .18s,box-shadow .18s;
+  }
+  .btn-eksport:hover{filter:brightness(1.09);transform:translateY(-1px);
+    box-shadow:0 9px 20px rgba(36,83,138,.40)}
+  .btn-eksport:focus-visible{outline:2px solid var(--biru-cerah);outline-offset:2px}
+  .btn-eksport .chev{display:inline-flex;transition:transform .2s}
+  .eksport-butang.buka .btn-eksport .chev{transform:rotate(180deg)}
+  .dd-menu{
+    position:absolute;right:0;top:calc(100% + 6px);z-index:80;
+    min-width:190px;padding:6px;margin:0;border-radius:12px;
+    background:var(--dd-bg);border:1px solid var(--brd-lembut);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    box-shadow:0 20px 44px rgba(0,0,0,.38),0 0 0 1px rgba(0,0,0,.10);
+    display:none;flex-direction:column;gap:2px;
+  }
+  .eksport-butang.buka .dd-menu{display:flex}
+  .dd-item{
+    appearance:none;cursor:pointer;font-family:inherit;font-size:12.4px;font-weight:600;
+    padding:9px 11px;border-radius:8px;border:0;background:transparent;color:var(--teks-2);
+    display:flex;align-items:center;gap:10px;text-align:left;white-space:nowrap;
+    transition:background .15s,color .15s;
+  }
+  .dd-item:hover,.dd-item:focus-visible{background:var(--dd-item-hover);color:var(--teks-1);outline:none}
+  .dd-item svg{flex:0 0 auto;opacity:.85}
+  .dd-item[data-eksport="cetak"]{border-top:1px solid var(--brd-lembut);
+    border-radius:0 0 8px 8px;margin-top:3px;padding-top:11px}
+  .dd-item[data-eksport="cetak"] svg{opacity:1;color:var(--biru-muda)}
 .jadual-kosong{padding:38px 18px;text-align:center;color:var(--teks-3);font-size:13px}
 
 /* ---- badge ---- */
@@ -1407,7 +1478,8 @@ html[data-tema="cerah"] .btn-bahaya{color:#2F2A66}
 .kertas .jumlah{text-align:right;font-weight:700;font-size:14px;margin-top:10px}
 .kertas .tt-tangan{margin-top:34px;display:flex;justify-content:space-between;font-size:12px}
 .kertas .tt-tangan div span{display:block;border-top:1px solid #101828;padding-top:5px;margin-top:46px;min-width:180px}
-.kertas .nota-kecil{font-size:11px;color:#475467;margin-top:18px;border-top:1px dashed #98A2B3;padding-top:10px}
+.kertas .nota-kecil{font-size:11.4px;color:var(--teks-3);margin:10px 0 0}
+  #cuHasil:empty{display:none}
 .kertas-2{max-width:760px;margin:0 auto}
 .kertas-2 + .kertas-2{margin-top:22px}
 
@@ -1475,6 +1547,11 @@ html[data-tema="cerah"] .audit-diff .b .baru2{color:#0E6B50}
   display:flex;gap:11px;align-items:flex-start;padding:13px 16px;font-size:12.6px;line-height:1.6;
   border-bottom:1px solid var(--brd-lembut);background:rgba(38, 96, 134,.12);color:var(--teks-2);
 }
+/* Baris bantuan padat SATU baris (menggantikan nota-panel tebal pada halaman
+   entiti supaya blok tidak bertimbun-timbun). */
+.bantuan{display:flex;gap:7px;align-items:baseline;flex-wrap:wrap;margin:0 0 14px;
+  font-size:12.2px;line-height:1.5;color:var(--teks-3)}
+.bantuan b{color:var(--teks-2);font-weight:700;white-space:nowrap}
 .nota-panel svg{width:17px;height:17px;flex:0 0 auto;stroke:var(--emas-teks);fill:none;stroke-width:1.9;margin-top:1px}
 .nota-panel b{color:var(--emas-teks)}
 
@@ -1589,7 +1666,7 @@ html[data-tema="gelap"] #dotfield::after{--dot-fade:rgba(4, 7, 22,.55)}
   padding:12px clamp(18px,3vw,32px);background:var(--kad-bg-1);
   border-bottom:1px solid var(--permukaan-brd);
   -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
-  justify-content:space-between;flex-wrap:wrap;
+  justify-content:flex-end;flex-wrap:wrap;
 }
 .mp-crumb{display:flex;align-items:center;gap:8px;font-size:12.6px;color:var(--teks-3);min-width:0;flex-wrap:wrap}
 .mp-crumb i{font-style:normal;color:var(--teks-3);opacity:.6}
@@ -1625,6 +1702,9 @@ html[data-tema="gelap"] #dotfield::after{--dot-fade:rgba(4, 7, 22,.55)}
 .borang-nombor{width:20px;height:20px;border-radius:6px;display:grid;place-items:center;font-size:11px;font-weight:800;
   background:rgba(90,167,220,.16);color:var(--biru-cerah);border:1px solid rgba(90,167,220,.32)}
 .borang-seksyen .borang-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}
+  .borang-grid[data-grid="3"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+  @media (max-width:900px){.borang-grid[data-grid="3"]{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:600px){.borang-grid[data-grid="3"]{grid-template-columns:1fr}}
 .medan-borang.kelas-medan-2{grid-column:1/-1}
 @media (max-width:620px){.borang-seksyen .borang-grid{grid-template-columns:1fr}}
 
@@ -1633,11 +1713,29 @@ html[data-tema="gelap"] #dotfield::after{--dot-fade:rgba(4, 7, 22,.55)}
 .borang-nombor{flex:0 0 auto}
 
 /* ---------- panel Carian Maklumat (URS) ---------- */
-.panel-carian-urs{margin-bottom:14px}
+/* Carian Maklumat: panel boleh lipat — ringkasan 1 baris, medan muncul
+   hanya bila dibuka, jadi halaman entiti tidak lagi bertimbun 250px. */
+details.panel-carian-urs{margin-bottom:16px}
+  details.panel-carian-urs[open]{padding-bottom:18px}
+  details.panel-carian-urs[open] .borang-grid,
+  details.panel-carian-urs[open] .aksi-carian,
+  details.panel-carian-urs[open] .nota-kecil{padding-left:22px;padding-right:22px}
+.panel-carian-urs>summary{cursor:pointer;list-style:none;margin-bottom:0;padding:13px 16px}
+.panel-carian-urs>summary::-webkit-details-marker{display:none}
+.panel-carian-urs>summary:hover{background:var(--kad-bg-2)}
+.panel-carian-urs[open]>summary{border-bottom:1px solid var(--brd-lembut)}
+.panel-carian-urs[open]>summary .kanan{transform:rotate(225deg)}
+.panel-carian-urs .kanan{margin-left:auto;width:8px;height:8px;flex:none;
+  border-right:2px solid var(--teks-3);border-bottom:2px solid var(--teks-3);
+  transform:rotate(45deg);transition:transform .18s ease}
+.panel-carian-urs[open]>.borang-grid,
+.panel-carian-urs[open]>.aksi-carian,
+.panel-carian-urs[open]>.nota-kecil{padding-left:16px;padding-right:16px}
+.panel-carian-urs[open]>.aksi-carian{display:flex;justify-content:flex-end;gap:9px;align-items:center;margin:6px 0 0}
 .panel-carian-urs .borang-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 14px}
 @media (max-width:900px){.panel-carian-urs .borang-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:620px){.panel-carian-urs .borang-grid{grid-template-columns:1fr}}
-.kepala-carian{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.kepala-carian{display:flex;align-items:center;gap:8px;margin-bottom:0;flex-wrap:wrap;cursor:pointer;list-style:none}
 .kepala-carian b{font-size:13.4px}
 .kepala-carian .nota-kecil{font-size:11.4px;color:var(--teks-3)}
 .pilih-jenis{margin-bottom:14px}
@@ -1676,7 +1774,20 @@ html[data-tema="gelap"] #dotfield::after{--dot-fade:rgba(4, 7, 22,.55)}
 
 /* ---------- aksi baris jadual ---------- */
 .aksi-kol{white-space:nowrap}
-.aksi-baris{display:flex;gap:6px;flex-wrap:wrap}
+/* Sel teks panjang: satu baris + elipsis. Teks penuh ada dalam title (hover),
+   jadi maklumat tidak hilang walaupun baris jadual kekal pendek & seragam. */
+.jadual td.potong>span{display:block;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap}
+/* Jadual yang dikunci susun atur: semua kolum muat, teks panjang berelipsis. */
+.jadual.jadual-lebar{table-layout:fixed}
+  .jadual-lebar thead th{white-space:normal;line-height:1.25}
+.jadual.jadual-lebar td,.jadual.jadual-lebar th{overflow:hidden}
+
+.aksi-baris{display:flex;gap:6px;flex-wrap:nowrap;align-items:center}
+/* Butang baris: ikon sahaja, padat — teks penuh ada dalam title/aria-label.
+   Inilah yang buat tinggi baris jadual 91px -> ~44px, jadual nampak lega. */
+.btn-ikon{padding:7px 9px;line-height:1}
+.btn-ikon svg{width:15px;height:15px;display:block}
 .btn.kecil.bahaya{background:rgba(160,60,60,.16);border-color:rgba(200,90,90,.4);color:#FFB3A8}
 .btn.kecil.bahaya:hover{background:rgba(160,60,60,.3)}
 .nota-kecil{font-size:11.4px;color:var(--teks-3);font-weight:600}
@@ -1975,11 +2086,6 @@ button.pantas-luar:hover{background:var(--kad-bg-2);color:var(--gold-2)}
     <!-- ---------- KANDUNGAN ---------- -->
     <main class="utama">
       <header class="bar-atas">
-        <div class="kedudukan">
-          <span>Laman Utama</span>
-          <span class="pisah">/</span>
-          <b>Paparan Modul</b>
-        </div>
         <div class="kanan">
           <div class="cip-atas" title="Bahasa">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3.2 9h17.6M3.2 15h17.6M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
@@ -2370,7 +2476,10 @@ const I = {
   tampal : '<rect x="3.5" y="4.5" width="17" height="16" rx="2.2"/><path d="M8 4.5V3h8v1.5"/><path d="M8 11h8M8 15h5"/>',
   guna   : '<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/>',
   pusing : '<path d="M4 8.5h13.5l-3.4-3.4M20 15.5H6.5l3.4 3.4"/>',
-  tampak : '<rect x="3.5" y="4.5" width="17" height="16" rx="2.2"/><path d="M3.5 9.5h17M9 9.5V20.5"/><path d="M13 13.5h4M13 17h3"/>'
+  hapus  : '<path d="M4 7h16M9.5 7V4.6h5V7M6.4 7l.9 12.6a1.6 1.6 0 0 0 1.6 1.5h6.2a1.6 1.6 0 0 0 1.6-1.5L17.6 7"/><path d="M10.4 10.8v6M13.6 10.8v6"/>',
+  tampak : '<rect x="3.5" y="4.5" width="17" height="16" rx="2.2"/><path d="M3.5 9.5h17M9 9.5V20.5"/><path d="M13 13.5h4M13 17h3"/>',
+  chevron : '<path d="M6 9l6 6 6-6"/>',
+  unduh   : '<path d="M12 3.5v11"/><path d="M7.6 10.1 12 14.5l4.4-4.4"/><path d="M4.5 20h15"/>'
 };
 
 /* ---------------- KEPALA HALAMAN ---------------- */
@@ -2429,7 +2538,7 @@ let JADUAL_KAUNTER = 0;
 
 function jadual(cfg){
   const id = cfg.id;
-  JADUAL_KAEDAH[id] = { cfg: cfg, baris: cfg.baris.slice(), hapus: 1, saiz: cfg.saiz||8, arah:{}, tapis:{}, cari:'' };
+  JADUAL_KAEDAH[id] = { cfg: cfg, baris: cfg.baris.slice(), hapus: 1, saiz: cfg.saiz||10, arah:{}, tapis:{}, cari:'' };
   return binaJadual(id);
 }
 
@@ -2497,18 +2606,34 @@ function binaJadual(id){
 
   /* --- bar eksport: setiap jadual WAJIB boleh eksport PDF / Excel / CSV --- */
   if(cfg.eksport !== false){
+    const jid = esc(id);
     html += '<div class="eksport">'
       + '<span class="tajuk-eksport">Eksport</span>'
       + '<span class="bil-eksport">'+jumlah+' rekod</span>'
-      + '<button type="button" class="btn" data-eksport="pdf" data-jad="'+esc(id)+'">'+ico(I.muat,14)+'PDF</button>'
-      + '<button type="button" class="btn" data-eksport="excel" data-jad="'+esc(id)+'">'+ico(I.muat,14)+'Excel</button>'
-      + '<button type="button" class="btn" data-eksport="csv" data-jad="'+esc(id)+'">'+ico(I.muat,14)+'CSV</button>'
-      + '<button type="button" class="btn" data-eksport="cetak" data-jad="'+esc(id)+'">'+ico(I.cetak,14)+'Cetak</button>'
+      + '<div class="eksport-butang">'
+      +   '<button type="button" class="btn-eksport" data-dd="1" data-jad="'+jid
+      +     '" aria-haspopup="true" aria-expanded="false" aria-label="Eksport — pilih format">'
+      +     ico(I.unduh,15)+'<span>Eksport</span>'
+      +     '<span class="chev">'+ico(I.chevron,14)+'</span>'
+      +   '</button>'
+      +   '<div class="dd-menu" role="menu" aria-label="Format eksport">'
+      +     '<button type="button" class="dd-item" role="menuitem" data-eksport="pdf" data-jad="'+jid+'">'+ico(I.fail,14)+'PDF</button>'
+      +     '<button type="button" class="dd-item" role="menuitem" data-eksport="excel" data-jad="'+jid+'">'+ico(I.fail,14)+'Excel (.xlsx)</button>'
+      +     '<button type="button" class="dd-item" role="menuitem" data-eksport="csv" data-jad="'+jid+'">'+ico(I.fail,14)+'CSV</button>'
+      +     '<button type="button" class="dd-item" role="menuitem" data-eksport="cetak" data-jad="'+jid+'">'+ico(I.cetak,14)+'Cetak</button>'
+      +   '</div>'
+      + '</div>'
       + '</div>';
   }
 
   /* --- jadual --- */
-  html += '<div class="wrap-jadual"><table class="jadual"><thead><tr>';
+  /* Kalau kolum ada 'lebar' (peratus), kunci susun atur supaya SEMUA kolum muat
+     dalam bekas — tiada kolum terpotong / scroll mendatar. */
+  const adaLebar = cfg.kolum.some(function(c){ return !!c.lebar; });
+  html += '<div class="wrap-jadual"><table class="jadual'+(adaLebar?' jadual-lebar':'')+'">'
+       +  (adaLebar ? '<colgroup>' + cfg.kolum.map(function(c){
+              return '<col'+(c.lebar?' style="width:'+c.lebar+'"':'')+' />'; }).join('') + '</colgroup>' : '')
+       +  '<thead><tr>';
   if(cfg.tick) html += '<th class="tick"><input type="checkbox" class="tick" data-tick-semua="'+esc(id)+'" aria-label="Pilih semua" /></th>';
   cfg.kolum.forEach(function(c){
     const arah = (srt && srt.kolum===c.k) ? srt.dir : '';
@@ -2524,6 +2649,13 @@ function binaJadual(id){
       html += '<tr data-baris="'+esc(r.id||i)+'">';
       if(cfg.tick) html += '<td class="tick"><input type="checkbox" class="tick" data-tick="'+esc(id)+'" value="'+esc(r.id||i)+'" aria-label="Pilih baris" /></td>';
       cfg.kolum.forEach(function(c){
+        if(c.potong && !c.sel){
+          /* Teks panjang: satu baris + elipsis; teks penuh dalam tooltip. */
+          const teks = String(r[c.k]==null?'':r[c.k]);
+          html += '<td class="potong'+(c.kelas?' '+c.kelas:'')+'">'
+               +  '<span title="'+esc(teks)+'">'+esc(teks)+'</span></td>';
+          return;
+        }
         const isi = c.sel ? c.sel(r) : esc(r[c.k]);
         html += '<td'+(c.kelas?' class="'+c.kelas+'"':'')+'>'+isi+'</td>';
       });
@@ -2537,7 +2669,7 @@ function binaJadual(id){
   html += '<div class="pagi"><span class="info">Menunjuk '+dari+'–'+hingga+' daripada <b>'+jumlah+'</b> rekod'
        + (jumlah !== st.baris.length ? ' (ditapis dari '+st.baris.length+')' : '') + '</span>'
        + '<span class="pilih">Baris<select data-jsaiz="'+esc(id)+'">'
-       + [8,15,25,50].map(function(n){ return '<option'+(st.saiz===n?' selected':'')+'>'+n+'</option>'; }).join('')
+       + [8,10,15,25,50].map(function(n){ return '<option'+(st.saiz===n?' selected':'')+'>'+n+'</option>'; }).join('')
        + '</select></span>';
   html += '<span class="nombor">';
   html += '<button type="button" data-jmuka="'+esc(id)+'" data-n="'+(st.hapus-1)+'"'+(st.hapus<=1?' disabled':'')+'>Sebelum</button>';
@@ -2887,10 +3019,50 @@ function muatTurun(blob, nama){
   setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 1500);
 }
 
+/* --- menu turun eksport: satu butang, banyak format --- */
+function tutupMenuEksport(kecuali){
+  document.querySelectorAll('.eksport-butang.buka').forEach(function(k){
+    if(k === kecuali) return;
+    k.classList.remove('buka');
+    const b = k.querySelector('.btn-eksport');
+    if(b) b.setAttribute('aria-expanded','false');
+    const mm = k.querySelector('.dd-menu');
+    if(mm){ mm.style.position=''; mm.style.top=''; mm.style.left=''; mm.style.minWidth=''; }
+  });
+}
+function bukaMenuEksport(kotak){
+  const butang = kotak.querySelector('.btn-eksport'), menu = kotak.querySelector('.dd-menu');
+  if(!butang || !menu) return;
+  tutupMenuEksport(kotak);
+  kotak.classList.add('buka');
+  butang.setAttribute('aria-expanded','true');
+  /* .panel{overflow:hidden} akan memotong absolute -> kira & pakai fixed */
+  menu.style.position = 'fixed';
+  menu.style.minWidth = Math.max(190, Math.round(butang.getBoundingClientRect().width)) + 'px';
+  menu.style.visibility = 'hidden';
+  const rb = butang.getBoundingClientRect();
+  const mw = menu.offsetWidth, mh = menu.offsetHeight;
+  let atas = rb.bottom + 6;
+  if(atas + mh > window.innerHeight - 8) atas = Math.max(8, rb.top - mh - 6);
+  let kiri = rb.right - mw;
+  if(kiri < 8) kiri = 8;
+  menu.style.top = Math.round(atas) + 'px';
+  menu.style.left = Math.round(kiri) + 'px';
+  menu.style.visibility = '';
+}
+
 /* --- pengendali butang eksport (satu untuk semua jadual) --- */
 document.addEventListener('click', function(e){
+  const togol = e.target.closest('[data-dd="1"]');
+  if(togol){
+    const kotak = togol.closest('.eksport-butang');
+    if(kotak.classList.contains('buka')) tutupMenuEksport();
+    else bukaMenuEksport(kotak);
+    return;
+  }
   const b = e.target.closest('[data-eksport]');
-  if(!b) return;
+  if(!b){ if(!e.target.closest('.dd-menu')) tutupMenuEksport(); return; }
+  tutupMenuEksport();
   const id = b.getAttribute('data-jad');
   if(!JADUAL_KAEDAH[id]) return;
   const jenis = b.getAttribute('data-eksport');
@@ -2899,6 +3071,9 @@ document.addEventListener('click', function(e){
   else if(jenis === 'pdf')   eksportCetak(id, false);
   else if(jenis === 'cetak') eksportCetak(id, true);
 });
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') tutupMenuEksport(); });
+window.addEventListener('scroll', function(){ tutupMenuEksport(); }, true);
+window.addEventListener('resize', function(){ tutupMenuEksport(); });
 
 /* --- pengendali jadual (satu listener untuk semua jadual) --- */
 function lukisSemulaJadual(id, simpanTumpu){
@@ -4691,7 +4866,7 @@ const ENTITI = {
       {k:'kod', t:'No. Kompaun', sortir:true, kelas:'kod utama2'},
       {k:'jenis', t:'Jenis', sortir:true},
       {k:'premis', t:'Premis / Kenderaan', sortir:true},
-      {k:'kesalahan', t:'Kesalahan', sortir:true},
+      {k:'kesalahan', t:'Kesalahan', sortir:true, potong:true},
       {k:'amaun', t:'Amaun', sortir:true, kelas:'kanan', nilai:function(r){ return Number(r.amaun); }, sel:function(r){ return wang(r.amaun); }},
       {k:'tarikh', t:'Tarikh', sortir:true},
       {k:'status', t:'Status', sortir:true, sel:function(r){ return bdg(r.status, r.status==='Bayar'?'hijau':r.status==='Tertunggak'?'merah':r.status==='Batal'?'kelabu':r.status==='Rayuan'?'kuning':'biru'); }}
@@ -5217,7 +5392,7 @@ function crud(id){
   if(!e) return '<div class="nota-panel">'+ico(I.amaran)+'<span>Entiti tidak dijumpai.</span></div>';
 
   const cfg = {
-    id: e.id, baris: e.wadah, saiz: e.saiz || 8,
+    id: e.id, baris: e.wadah, saiz: e.saiz || 10,
     placeholder: 'Cari ' + (e.cari || ['id']).join(', ') + '…',
     cari: e.cari || Object.keys(e.wadah[0] || {}),
     tapis: e.tapis || [],
@@ -5227,18 +5402,17 @@ function crud(id){
       k:'__aksi', t:'Tindakan', kelas:'aksi-kol',
       sel: function(r){
         return '<div class="aksi-baris">'
-          + '<button type="button" class="btn kecil" data-crud-edit="'+esc(id)+'" data-id="'+esc(r.id)+'">'+ico(I.edit)+'Sunting</button>'
-          + '<button type="button" class="btn kecil bahaya" data-crud-hapus="'+esc(id)+'" data-id="'+esc(r.id)+'">'+ico(I.batal)+'Hapus</button>'
+          + '<button type="button" class="btn kecil btn-ikon" data-crud-edit="'+esc(id)+'" data-id="'+esc(r.id)+'" title="Sunting" aria-label="Sunting">'+ico(I.edit)+'</button>'
+          + '<button type="button" class="btn kecil bahaya btn-ikon" data-crud-hapus="'+esc(id)+'" data-id="'+esc(r.id)+'" title="Hapus" aria-label="Hapus">'+ico(I.hapus)+'</button>'
           + '</div>';
       }
     }])
   };
 
   return kepala({
-      kecil:'Modul ' + e.modul, tajuk:e.tajuk, huraian:esc(e.huraian),
+      kecil:'Modul ' + e.modul, tajuk:e.tajuk, huraian:(e.huraian ? esc(e.huraian) : ''),
       aksi:'<button type="button" class="btn btn-utama2" data-crud-tambah="'+esc(id)+'">'+ico(I.tambah)+'Tambah '+esc(e.tajuk)+'</button>'
     })
-    + (e.nota ? '<div class="nota-panel">'+ico(I.amaran)+'<span>'+e.nota+'</span></div>' : '')
     + (e.ursMedan ? carianMaklumatUrs(id) : '')
     + jadual(cfg);
 }
@@ -6412,7 +6586,77 @@ const URS_NA = [
    noPelesen:'MPPG/LES/2024/0012', jenisLesen:'Lesen Premis', namaPremis:'Restoran Sri Mutiara',
    alamatPremis:'No 88, Taman Mawar, Masai', jenisKesalahanLesen:'Melanggar Syarat Lesen',
    akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Berniaga tanpa lesen PBT', kadarDenda:250,
-   lampiran:'bukti-premis-02.jpg', jenis:'Lesen', status:'Aktif', tarikh:'2026-10-02'}
+   lampiran:'bukti-premis-02.jpg', jenis:'Lesen', status:'Aktif', tarikh:'2026-10-02'},
+  {id:'NA-2602-1003', noNotis:'WRW00043', kodKompaun:'PG001K', tarikhTawaran:'2026-10-03', masaTawaran:'09:20',
+   tempoh:'30 hari', keterangan:'Parkir tanpa kupon', noPembantu:'PG2077', namaPenguatkuasa:'Suresh Kumar',
+   namaPesalah:'Lim Wei Sheng', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000155', noPengenalan:'910712045566',
+   alamatPesalah:'No 5, Taman Scientex', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   noKereta:'JPE2109', noCukaiJalan:'JM9911', jenisKereta:'Kereta', warnaKereta:'Warna Putih',
+   noPetak:'P-0231', noKupon:'KPN-889910', kodPetak:'PK-A',
+   tempatKesalahan:'Petak letak kereta Jalan Bandar', tamanJalan:'Jalan Bandar', bandarKesalahan:'Pasir Gudang',
+   taman:'Taman Scientex', jalan:'Jalan Bandar 5', lokasiLain:'—',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Parkir tanpa kupon', kadarDenda:30,
+   lampiran:'bukti-petak-03.jpg', jenis:'Letak Kereta', status:'Aktif', tarikh:'2026-10-03'},
+  {id:'NA-2602-1004', noNotis:'WRW00044', kodKompaun:'PG001P', tarikhTawaran:'2026-10-04', masaTawaran:'08:55',
+   tempoh:'30 hari', keterangan:'Berhenti di garisan kuning', noPembantu:'PG2055', namaPenguatkuasa:'Ahmad Zaki',
+   namaPesalah:'Ahmad Faizal bin Osman', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000221', noPengenalan:'870915045512',
+   alamatPesalah:'No 30, Jalan Kemboja', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   noKereta:'WB8899C', noCukaiJalan:'JW5521', jenisKereta:'Kereta', warnaKereta:'Warna Hitam',
+   tempatKesalahan:'Jalan Kemboja hadapan sekolah', tamanJalan:'Jalan Kemboja', bandarKesalahan:'Pasir Gudang', lokasiLain:'—',
+   akta:'Akta Pengangkutan Jalan 1987', kesalahan:'Berhenti di garisan kuning', kadarDenda:30,
+   lampiran:'bukti-parkir-04.jpg', jenis:'Trafik', status:'Kompaun', tarikh:'2026-10-04'},
+  {id:'NA-2602-1005', noNotis:'WRW00045', kodKompaun:'PG001L', tarikhTawaran:'2026-10-05', masaTawaran:'11:05',
+   tempoh:'60 hari', keterangan:'Bahan binaan di lima kaki jalan', noPembantu:'PG2099', namaPenguatkuasa:'Rizal Hamid',
+   namaPesalah:'Kedai Dobi Bersih', jenisPengenalan:'Syarikat', noPelanggan:'CUST-000204', noPengenalan:'202301004477',
+   alamatPesalah:'No 21, Taman Mawar', poskod:'81750', bandar:'Masai', negeri:'Johor',
+   noPelesen:'MPPG/LES/2024/0088', jenisLesen:'Lesen Premis', namaPremis:'Kedai Dobi Bersih',
+   alamatPremis:'No 21, Taman Mawar, Masai', jenisKesalahanLesen:'Halangan laluan awam',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Bahan binaan di lima kaki jalan', kadarDenda:300,
+   lampiran:'bukti-premis-05.jpg', jenis:'Lesen', status:'Aktif', tarikh:'2026-10-05'},
+  {id:'NA-2602-1006', noNotis:'WRW00046', kodKompaun:'PG001K', tarikhTawaran:'2026-10-05', masaTawaran:'15:30',
+   tempoh:'30 hari', keterangan:'Melebihi tempoh parkir berbayar', noPembantu:'PG2088', namaPenguatkuasa:'Noraini Yusof',
+   namaPesalah:'Siti Nurhaliza binti Rahim', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000242', noPengenalan:'930625045577',
+   alamatPesalah:'Blok B, Pangsapuri Nusantara', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   noKereta:'JKS4477', noCukaiJalan:'JP8842', jenisKereta:'MPV', warnaKereta:'Warna Kelabu',
+   noPetak:'P-0188', noKupon:'KPN-771204', kodPetak:'PK-B',
+   tempatKesalahan:'Zon parkir Jalan Perindustrian 3', tamanJalan:'Jalan Perindustrian 3', bandarKesalahan:'Pasir Gudang',
+   taman:'Taman Nusantara', jalan:'Jalan Perindustrian 3', lokasiLain:'—',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Melebihi tempoh parkir berbayar', kadarDenda:30,
+   lampiran:'bukti-petak-06.jpg', jenis:'Letak Kereta', status:'Tamat Tempoh', tarikh:'2026-10-05'},
+  {id:'NA-2602-1007', noNotis:'WRW00047', kodKompaun:'PG001P', tarikhTawaran:'2026-10-06', masaTawaran:'07:45',
+   tempoh:'30 hari', keterangan:'Kenderaan diletak di laluan pejalan kaki', noPembantu:'PG2077', namaPenguatkuasa:'Suresh Kumar',
+   namaPesalah:'Goh Ah Seng', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000263', noPengenalan:'750418045533',
+   alamatPesalah:'No 9, Lorong Bukit 2', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   noKereta:'JHT3321', noCukaiJalan:'JN1177', jenisKereta:'Kereta', warnaKereta:'Warna Merah',
+   tempatKesalahan:'Lorong Bukit 2 hadapan pasar', tamanJalan:'Lorong Bukit 2', bandarKesalahan:'Pasir Gudang', lokasiLain:'—',
+   akta:'Akta Pengangkutan Jalan 1987', kesalahan:'Kenderaan diletak di laluan pejalan kaki', kadarDenda:50,
+   lampiran:'bukti-parkir-07.jpg', jenis:'Trafik', status:'Batal', tarikh:'2026-10-06'},
+  {id:'NA-2602-1008', noNotis:'WRW00048', kodKompaun:'PG001L', tarikhTawaran:'2026-10-06', masaTawaran:'12:10',
+   tempoh:'60 hari', keterangan:'Meletak meja di luar premis', noPembantu:'PG2099', namaPenguatkuasa:'Faizal Omar',
+   namaPesalah:'Warung Pak Ali', jenisPengenalan:'Syarikat', noPelanggan:'CUST-000291', noPengenalan:'202001006612',
+   alamatPesalah:'No 4, Jalan Besar', poskod:'81750', bandar:'Masai', negeri:'Johor',
+   noPelesen:'MPPG/LES/2023/0201', jenisLesen:'Lesen Penjaja', namaPremis:'Warung Pak Ali',
+   alamatPremis:'No 4, Jalan Besar, Masai', jenisKesalahanLesen:'Melanggar Syarat Lesen',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Meletak meja di luar premis', kadarDenda:150,
+   lampiran:'bukti-premis-08.jpg', jenis:'Lesen', status:'Kompaun', tarikh:'2026-10-06'},
+  {id:'NA-2602-1009', noNotis:'WRW00049', kodKompaun:'PG001K', tarikhTawaran:'2026-10-07', masaTawaran:'09:35',
+   tempoh:'30 hari', keterangan:'Parkir di petak orang kurang upaya', noPembantu:'PG2088', namaPenguatkuasa:'Noraini Yusof',
+   namaPesalah:'Muthu Kumar', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000318', noPengenalan:'881130045566',
+   alamatPesalah:'No 17, Bandar Baru Pasir Gudang', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   noKereta:'JPN5566', noCukaiJalan:'JR2299', jenisKereta:'Kereta', warnaKereta:'Warna Perak',
+   noPetak:'P-0305', noKupon:'—', kodPetak:'PK-C',
+   tempatKesalahan:'Petak OKU Jalan Besar', tamanJalan:'Jalan Besar', bandarKesalahan:'Pasir Gudang',
+   taman:'Bandar Baru Pasir Gudang', jalan:'Jalan Besar', lokasiLain:'—',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Parkir di petak orang kurang upaya', kadarDenda:100,
+   lampiran:'bukti-petak-09.jpg', jenis:'Letak Kereta', status:'Aktif', tarikh:'2026-10-07'},
+  {id:'NA-2602-1010', noNotis:'WRW00050', kodKompaun:'PG001P', tarikhTawaran:'2026-10-07', masaTawaran:'16:25',
+   tempoh:'30 hari', keterangan:'Kenderaan menghalang laluan masuk', noPembantu:'PG2055', namaPenguatkuasa:'Ahmad Zaki',
+   namaPesalah:'Nurul Izzah binti Hassan', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000344', noPengenalan:'960207045599',
+   alamatPesalah:'No 2, Kampung Pasir Putih', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   noKereta:'JQL7788', noCukaiJalan:'JT6677', jenisKereta:'Kereta', warnaKereta:'Warna Hijau',
+   tempatKesalahan:'Jalan Cendana hadapan surau', tamanJalan:'Jalan Cendana', bandarKesalahan:'Pasir Gudang', lokasiLain:'—',
+   akta:'Akta Pengangkutan Jalan 1987', kesalahan:'Kenderaan menghalang laluan masuk', kadarDenda:30,
+   lampiran:'bukti-parkir-10.jpg', jenis:'Trafik', status:'Aktif', tarikh:'2026-10-07'}
 ];
 
 const URS_KOMPAUN = [
@@ -6441,7 +6685,67 @@ const URS_KOMPAUN = [
    noPelesen:'MPPG/LES/2024/0088', jenisLesen:'Lesen Premis', namaPremis:'Kedai Dobi Bersih',
    alamatPremis:'No 21, Taman Mawar, Masai', jenisKesalahanLesen:'Melanggar Syarat Lesen',
    akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Melanggar syarat lesen premis', kadarDenda:500,
-   lampiran:'bukti-lesen-04.jpg', jenis:'Lesen', status:'Belum Bayar', tarikh:'2026-10-03'}
+   lampiran:'bukti-lesen-04.jpg', jenis:'Lesen', status:'Belum Bayar', tarikh:'2026-10-03'},
+  {id:'PG001P2610072', noNotis:'WRW00044', kodKompaun:'PG001P', tarikhTawaran:'2026-10-04', masaTawaran:'08:55',
+   tempoh:'30 hari', keterangan:'Berhenti di garisan kuning', noPembantu:'PG2055', namaPenguatkuasa:'Ahmad Zaki',
+   namaPesalah:'Ahmad Faizal bin Osman', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000221', noPengenalan:'870915045512',
+   alamatPesalah:'No 30, Jalan Kemboja', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   noKereta:'WB8899C', noCukaiJalan:'JW5521', jenisKereta:'Kereta', warnaKereta:'Warna Hitam',
+   tempatKesalahan:'Jalan Kemboja hadapan sekolah', tamanJalan:'Jalan Kemboja', bandarKesalahan:'Pasir Gudang', lokasiLain:'—',
+   akta:'Akta Pengangkutan Jalan 1987', kesalahan:'Berhenti di garisan kuning', kadarDenda:30,
+   lampiran:'bukti-parkir-04.jpg', jenis:'Trafik', status:'Bayar', tarikh:'2026-10-04'},
+  {id:'PG001K2610011', noNotis:'WRW00046', kodKompaun:'PG001K', tarikhTawaran:'2026-10-05', masaTawaran:'15:30',
+   tempoh:'14 hari', keterangan:'Melebihi tempoh parkir berbayar', noPembantu:'PG2088', namaPenguatkuasa:'Noraini Yusof',
+   namaPesalah:'Siti Nurhaliza binti Rahim', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000242', noPengenalan:'930625045577',
+   alamatPesalah:'Blok B, Pangsapuri Nusantara', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   noKereta:'JKS4477', noCukaiJalan:'JP8842', jenisKereta:'MPV', warnaKereta:'Warna Kelabu',
+   noPetak:'P-0188', noKupon:'KPN-771204', kodPetak:'PK-B',
+   tempatKesalahan:'Zon parkir Jalan Perindustrian 3', tamanJalan:'Jalan Perindustrian 3', bandarKesalahan:'Pasir Gudang',
+   taman:'Taman Nusantara', jalan:'Jalan Perindustrian 3', lokasiLain:'—',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Melebihi tempoh parkir berbayar', kadarDenda:30,
+   lampiran:'bukti-petak-06.jpg', jenis:'Letak Kereta', status:'Tertunggak', tarikh:'2026-10-05'},
+  {id:'PG001P2610073', noNotis:'WRW00047', kodKompaun:'PG001P', tarikhTawaran:'2026-10-06', masaTawaran:'07:45',
+   tempoh:'30 hari', keterangan:'Kenderaan diletak di laluan pejalan kaki', noPembantu:'PG2077', namaPenguatkuasa:'Suresh Kumar',
+   namaPesalah:'Goh Ah Seng', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000263', noPengenalan:'750418045533',
+   alamatPesalah:'No 9, Lorong Bukit 2', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   noKereta:'JHT3321', noCukaiJalan:'JN1177', jenisKereta:'Kereta', warnaKereta:'Warna Merah',
+   tempatKesalahan:'Lorong Bukit 2 hadapan pasar', tamanJalan:'Lorong Bukit 2', bandarKesalahan:'Pasir Gudang', lokasiLain:'—',
+   akta:'Akta Pengangkutan Jalan 1987', kesalahan:'Kenderaan diletak di laluan pejalan kaki', kadarDenda:50,
+   lampiran:'bukti-parkir-07.jpg', jenis:'Trafik', status:'Batal', tarikh:'2026-10-06'},
+  {id:'PG001L2610112', noNotis:'WRW00048', kodKompaun:'PG001L', tarikhTawaran:'2026-10-06', masaTawaran:'12:10',
+   tempoh:'60 hari', keterangan:'Meletak meja di luar premis', noPembantu:'PG2099', namaPenguatkuasa:'Faizal Omar',
+   namaPesalah:'Warung Pak Ali', jenisPengenalan:'Syarikat', noPelanggan:'CUST-000291', noPengenalan:'202001006612',
+   alamatPesalah:'No 4, Jalan Besar', poskod:'81750', bandar:'Masai', negeri:'Johor',
+   noPelesen:'MPPG/LES/2023/0201', jenisLesen:'Lesen Penjaja', namaPremis:'Warung Pak Ali',
+   alamatPremis:'No 4, Jalan Besar, Masai', jenisKesalahanLesen:'Melanggar Syarat Lesen',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Meletak meja di luar premis', kadarDenda:150,
+   lampiran:'bukti-premis-08.jpg', jenis:'Lesen', status:'Rayuan', tarikh:'2026-10-06'},
+  {id:'PG001K2610013', noNotis:'WRW00049', kodKompaun:'PG001K', tarikhTawaran:'2026-10-07', masaTawaran:'09:35',
+   tempoh:'14 hari', keterangan:'Parkir di petak orang kurang upaya', noPembantu:'PG2088', namaPenguatkuasa:'Noraini Yusof',
+   namaPesalah:'Muthu Kumar', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000318', noPengenalan:'881130045566',
+   alamatPesalah:'No 17, Bandar Baru Pasir Gudang', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   noKereta:'JPN5566', noCukaiJalan:'JR2299', jenisKereta:'Kereta', warnaKereta:'Warna Perak',
+   noPetak:'P-0305', noKupon:'—', kodPetak:'PK-C',
+   tempatKesalahan:'Petak OKU Jalan Besar', tamanJalan:'Jalan Besar', bandarKesalahan:'Pasir Gudang',
+   taman:'Bandar Baru Pasir Gudang', jalan:'Jalan Besar', lokasiLain:'—',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Parkir di petak orang kurang upaya', kadarDenda:100,
+   lampiran:'bukti-petak-09.jpg', jenis:'Letak Kereta', status:'Belum Bayar', tarikh:'2026-10-07'},
+  {id:'PG001L2610114', noNotis:'WRW00045', kodKompaun:'PG001L', tarikhTawaran:'2026-10-07', masaTawaran:'14:50',
+   tempoh:'60 hari', keterangan:'Bahan binaan di lima kaki jalan', noPembantu:'PG2099', namaPenguatkuasa:'Rizal Hamid',
+   namaPesalah:'Kedai Dobi Bersih', jenisPengenalan:'Syarikat', noPelanggan:'CUST-000204', noPengenalan:'202301004477',
+   alamatPesalah:'No 21, Taman Mawar', poskod:'81750', bandar:'Masai', negeri:'Johor',
+   noPelesen:'MPPG/LES/2024/0088', jenisLesen:'Lesen Premis', namaPremis:'Kedai Dobi Bersih',
+   alamatPremis:'No 21, Taman Mawar, Masai', jenisKesalahanLesen:'Halangan laluan awam',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Bahan binaan di lima kaki jalan', kadarDenda:300,
+   lampiran:'bukti-premis-10.jpg', jenis:'Lesen', status:'Belum Bayar', tarikh:'2026-10-07'},
+  {id:'PG001P2610075', noNotis:'WRW00050', kodKompaun:'PG001P', tarikhTawaran:'2026-10-08', masaTawaran:'16:25',
+   tempoh:'30 hari', keterangan:'Kenderaan menghalang laluan masuk', noPembantu:'PG2055', namaPenguatkuasa:'Ahmad Zaki',
+   namaPesalah:'Nurul Izzah binti Hassan', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000344', noPengenalan:'960207045599',
+   alamatPesalah:'No 2, Kampung Pasir Putih', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   noKereta:'JQL7788', noCukaiJalan:'JT6677', jenisKereta:'Kereta', warnaKereta:'Warna Hijau',
+   tempatKesalahan:'Jalan Cendana hadapan surau', tamanJalan:'Jalan Cendana', bandarKesalahan:'Pasir Gudang', lokasiLain:'—',
+   akta:'Akta Pengangkutan Jalan 1987', kesalahan:'Kenderaan menghalang laluan masuk', kadarDenda:30,
+   lampiran:'bukti-parkir-10.jpg', jenis:'Trafik', status:'Didaftar', tarikh:'2026-10-08'}
 ];
 
 const URS_SITA = [
@@ -6458,39 +6762,91 @@ const URS_SITA = [
    namaPesalah:'Ah Hock', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000377', noPengenalan:'880221035544',
    alamatPesalah:'Kampung Pasir Putih', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
    akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Halangan di laluan awam', kadarDenda:200,
-   lampiran:'bukti-sita-02.jpg', jenis:'Penyitaan', status:'Dilepaskan', tarikh:'2026-10-05'}
+   lampiran:'bukti-sita-02.jpg', jenis:'Penyitaan', status:'Dilepaskan', tarikh:'2026-10-05'},
+  {id:'STA-2601-0009', noSita:'STA-2601-0009', kodSita:'SITA', tarikhSita:'2026-10-06', masaSita:'09:10',
+   tempatSita:'Jalan Besar hadapan gerai', barangSita:'Kerusi Plastik', kuantiti:'8 unit',
+   kosSitaan:120, storSitaan:'Stor Zon PG02', namaPenguatkuasa:'Noraini Yusof',
+   namaPesalah:'Gerai Makan Kak Timah', jenisPengenalan:'Syarikat', noPelanggan:'CUST-000402', noPengenalan:'201901004477',
+   alamatPesalah:'Jalan Besar', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Meletak barang di lima kaki jalan', kadarDenda:150,
+   lampiran:'bukti-sita-03.jpg', jenis:'Penyitaan', status:'Disita', tarikh:'2026-10-06'},
+  {id:'STA-2601-0010', noSita:'STA-2601-0010', kodSita:'TUNDA', tarikhSita:'2026-10-06', masaSita:'13:40',
+   tempatSita:'Jalan Perindustrian 3', barangSita:'Peti Ais', kuantiti:'1 unit',
+   kosSitaan:360, storSitaan:'Stor Tunda', namaPenguatkuasa:'Rizal Hamid',
+   namaPesalah:'Kedai Runcit Ah Meng', jenisPengenalan:'Syarikat', noPelanggan:'CUST-000418', noPengenalan:'202001005588',
+   alamatPesalah:'Jalan Perindustrian 3', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Barang menghalang laluan awam', kadarDenda:250,
+   lampiran:'bukti-sita-04.jpg', jenis:'Penyitaan', status:'Menunggu Pengesahan', tarikh:'2026-10-06'},
+  {id:'STA-2601-0011', noSita:'STA-2601-0011', kodSita:'SITA', tarikhSita:'2026-10-07', masaSita:'10:05',
+   tempatSita:'Taman Nusantara, blok C', barangSita:'Struktur Kanopi', kuantiti:'1 set',
+   kosSitaan:420, storSitaan:'Stor Zon PG03', namaPenguatkuasa:'Faizal Omar',
+   namaPesalah:'Mohd Rosli bin Awang', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000433', noPengenalan:'790512045511',
+   alamatPesalah:'Blok C, Taman Nusantara', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Struktur tanpa kelulusan', kadarDenda:500,
+   lampiran:'bukti-sita-05.jpg', jenis:'Penyitaan', status:'Disita', tarikh:'2026-10-07'},
+  {id:'STA-2601-0012', noSita:'STA-2601-0012', kodSita:'RAMPAS', tarikhSita:'2026-10-07', masaSita:'14:15',
+   tempatSita:'Jalan Kemboja hadapan kedai', barangSita:'Banner Pengiklanan', kuantiti:'4 keping',
+   kosSitaan:80, storSitaan:'Stor Ibu Pejabat', namaPenguatkuasa:'Suresh Kumar',
+   namaPesalah:'Kedai Emas Seri Mutiara', jenisPengenalan:'Syarikat', noPelanggan:'CUST-000447', noPengenalan:'202101003399',
+   alamatPesalah:'Jalan Kemboja', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Pengiklanan tanpa permit', kadarDenda:300,
+   lampiran:'bukti-sita-06.jpg', jenis:'Penyitaan', status:'Dilelong', tarikh:'2026-10-07'},
+  {id:'STA-2601-0013', noSita:'STA-2601-0013', kodSita:'SITA', tarikhSita:'2026-10-07', masaSita:'16:00',
+   tempatSita:'Jalan Cendana, tepi jalan', barangSita:'Mesin Rumput', kuantiti:'1 unit',
+   kosSitaan:180, storSitaan:'Stor Zon PG01', namaPenguatkuasa:'Ahmad Zaki',
+   namaPesalah:'Jabatan Landskap Sdn Bhd', jenisPengenalan:'Syarikat', noPelanggan:'CUST-000455', noPengenalan:'201801002211',
+   alamatPesalah:'Jalan Cendana', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Peralatan ditinggal di jalan awam', kadarDenda:200,
+   lampiran:'bukti-sita-07.jpg', jenis:'Penyitaan', status:'Disita', tarikh:'2026-10-07'},
+  {id:'STA-2601-0014', noSita:'STA-2601-0014', kodSita:'SITA', tarikhSita:'2026-10-08', masaSita:'08:30',
+   tempatSita:'Pasar Awam Pasir Gudang', barangSita:'Meja Pameran', kuantiti:'2 unit',
+   kosSitaan:110, storSitaan:'Stor Zon PG02', namaPenguatkuasa:'Noraini Yusof',
+   namaPesalah:'Penjaja Tan Ah Kow', jenisPengenalan:'Kad Pengenalan', noPelanggan:'CUST-000466', noPengenalan:'700823045522',
+   alamatPesalah:'Kampung Pasir Putih', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Berniaga tanpa kebenaran', kadarDenda:150,
+   lampiran:'bukti-sita-08.jpg', jenis:'Penyitaan', status:'Musnah', tarikh:'2026-10-08'},
+  {id:'STA-2601-0015', noSita:'STA-2601-0015', kodSita:'TUNDA', tarikhSita:'2026-10-08', masaSita:'11:50',
+   tempatSita:'Jalan Bandar 3', barangSita:'Trailer Terbiar', kuantiti:'1 unit',
+   kosSitaan:900, storSitaan:'Stor Tunda', namaPenguatkuasa:'Rizal Hamid',
+   namaPesalah:'Syarikat Logistik Maju', jenisPengenalan:'Syarikat', noPelanggan:'CUST-000478', noPengenalan:'201601001122',
+   alamatPesalah:'Jalan Bandar 3', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Kenderaan terbiar di jalan awam', kadarDenda:500,
+   lampiran:'bukti-sita-09.jpg', jenis:'Penyitaan', status:'Menunggu Pengesahan', tarikh:'2026-10-08'},
+  {id:'STA-2601-0016', noSita:'STA-2601-0016', kodSita:'RAMPAS', tarikhSita:'2026-10-08', masaSita:'15:20',
+   tempatSita:'Lorong Bukit 2', barangSita:'Khemah Niaga', kuantiti:'1 set',
+   kosSitaan:260, storSitaan:'Stor Zon PG03', namaPenguatkuasa:'Faizal Omar',
+   namaPesalah:'Pasar Malam Bukit', jenisPengenalan:'Syarikat', noPelanggan:'CUST-000489', noPengenalan:'202201004455',
+   alamatPesalah:'Lorong Bukit 2', poskod:'81700', bandar:'Pasir Gudang', negeri:'Johor',
+   akta:'Akta Kerajaan Tempatan 1976', kesalahan:'Binaan tanpa kelulusan', kadarDenda:400,
+   lampiran:'bukti-sita-10.jpg', jenis:'Penyitaan', status:'Disita', tarikh:'2026-10-08'}
 ];
 
 Object.assign(ENTITI, {
 
   'ies/notis-amaran': {
-    modul:'IES', id:'jad-ies-notis-amaran', wadah:URS_NA, saiz:8,
+    modul:'IES', id:'jad-ies-notis-amaran', wadah:URS_NA, saiz:10,
     tajuk:'Notis Amaran',
-    huraian:'Pendaftaran Notis Amaran ikut URS MBSJ — carian pesalah dahulu, kemudian daftar maklumat pesalah, notis, kesalahan dan lampiran.',
-    nota:'Aliran URS: <b>Carian Maklumat</b> (No. KP / Id. Pelanggan / Nama / Akaun Lesen / No. Kenderaan / No. Notis) → jika tiada rekod, <b>Daftar Pesalah Baharu</b>. No. notis dijana unik.',
-    janaId:function(){ return 'NA-2602-' + String(1001 + URS_NA.length); },
+    janaId:function(){ return 'NA-2602-' + String(1000 + URS_NA.length + 1); },
     ursMedan:function(){ return ursMedanTrafik(false); },
     cari:['id','noNotis','namaPesalah','noPengenalan','noKereta'],
     tapis:[{id:'jenis',label:'Jenis',pilihan:['Trafik','Letak Kereta','Lesen']},
            {id:'status',label:'Status',pilihan:['Aktif','Kompaun','Batal','Tamat Tempoh']}],
     kolum:[
-      {k:'noNotis', t:'No Notis', sortir:true, kelas:'kod utama2'},
-      {k:'tarikhTawaran', t:'Tarikh', sortir:true},
-      {k:'masaTawaran', t:'Masa'},
-      {k:'namaPesalah', t:'Nama Pesalah', sortir:true},
-      {k:'noKereta', t:'No. Kenderaan', sortir:true, kelas:'kod'},
-      {k:'akta', t:'Akta / UUK / Perintah', sortir:true},
-      {k:'kesalahan', t:'Kesalahan', sortir:true},
-      {k:'namaPenguatkuasa', t:'Penguatkuasa', sortir:true},
-      {k:'status', t:'Status', sortir:true, sel:function(r){ return bdg(r.status, r.status==='Aktif'?'biru':r.status==='Kompaun'?'kuning':r.status==='Batal'?'merah':'kelabu'); }}
+      {k:'noNotis', t:'No Notis', sortir:true, kelas:'kod utama2', lebar:'6.27%'},
+      {k:'tarikhTawaran', t:'Tarikh', sortir:true, lebar:'7.42%'},
+      {k:'masaTawaran', t:'Masa', lebar:'4.33%'},
+      {k:'namaPesalah', t:'Nama Pesalah', sortir:true, lebar:'14.22%'},
+      {k:'noKereta', t:'No. Kenderaan', sortir:true, kelas:'kod', lebar:'5.74%'},
+      {k:'akta', t:'Akta / UUK / Perintah', sortir:true, potong:true, lebar:'15.64%'},
+      {k:'kesalahan', t:'Kesalahan', sortir:true, potong:true, lebar:'19.7%'},
+      {k:'namaPenguatkuasa', t:'Penguatkuasa', sortir:true, lebar:'8.57%'},
+      {k:'status', t:'Status', sortir:true, lebar:'8.92%', sel:function(r){ return bdg(r.status, r.status==='Aktif'?'biru':r.status==='Kompaun'?'kuning':r.status==='Batal'?'merah':'kelabu'); }}
     ]
   },
 
   'ies/kompaun': {
-    modul:'IES', id:'jad-ies-kompaun', wadah:URS_KOMPAUN, saiz:8,
+    modul:'IES', id:'jad-ies-kompaun', wadah:URS_KOMPAUN, saiz:10,
     tajuk:'Tawaran Kompaun',
-    huraian:'Pendaftaran Tawaran Kompaun ikut URS MBSJ — Trafik, Letak Kereta dan Lesen ada medan berlainan.',
-    nota:'Medan <b>berbeza mengikut jenis</b>: Trafik ada butiran kenderaan + lokasi; Letak Kereta tambah <b>No. Petak / No. Kupon / Kod Petak</b>; Lesen ada <b>Maklumat Akaun Lesen</b> dan tiada butiran kenderaan.',
     janaId:function(){ return 'PG001P2610' + String(70 + URS_KOMPAUN.length).slice(-3); },
     ursMedan:function(){ return ursMedanTrafik(true); },
     ursJenis:true, ursAuto:true, jenisAsal:'Trafik',
@@ -6498,38 +6854,36 @@ Object.assign(ENTITI, {
     tapis:[{id:'jenis',label:'Jenis',pilihan:['Trafik','Letak Kereta','Lesen']},
            {id:'status',label:'Status',pilihan:['Didaftar','Belum Bayar','Bayar','Rayuan','Tertunggak','Batal']}],
     kolum:[
-      {k:'id', t:'No. Kompaun', sortir:true, kelas:'kod utama2'},
-      {k:'jenis', t:'Jenis', sortir:true},
-      {k:'noNotis', t:'No. Notis Amaran', sortir:true, kelas:'kod'},
-      {k:'namaPesalah', t:'Nama Pesalah', sortir:true},
-      {k:'noKereta', t:'No. Kenderaan', sortir:true, kelas:'kod'},
-      {k:'kesalahan', t:'Kesalahan', sortir:true},
-      {k:'kadarDenda', t:'Amaun', sortir:true, kelas:'kanan', nilai:function(r){ return Number(r.kadarDenda); }, sel:function(r){ return wang(r.kadarDenda); }},
-      {k:'tarikhTawaran', t:'Tarikh Kompaun', sortir:true},
-      {k:'status', t:'Status', sortir:true, sel:function(r){ return bdg(r.status, r.status==='Bayar'?'hijau':r.status==='Tertunggak'?'merah':r.status==='Batal'?'kelabu':r.status==='Rayuan'?'kuning':r.status==='Belum Bayar'?'merah':'biru'); }}
+      {k:'id', t:'No. Kompaun', sortir:true, kelas:'kod utama2', lebar:'9.19%'},
+      {k:'jenis', t:'Jenis', sortir:true, lebar:'7.77%'},
+      {k:'noNotis', t:'No. Notis Amaran', sortir:true, kelas:'kod', lebar:'6.27%'},
+      {k:'namaPesalah', t:'Nama Pesalah', sortir:true, lebar:'14.22%'},
+      {k:'noKereta', t:'No. Kenderaan', sortir:true, kelas:'kod', lebar:'5.74%'},
+      {k:'kesalahan', t:'Kesalahan', sortir:true, potong:true, lebar:'21.29%'},
+      {k:'kadarDenda', t:'Amaun', sortir:true, kelas:'kanan', lebar:'8.22%', nilai:function(r){ return Number(r.kadarDenda); }, sel:function(r){ return wang(r.kadarDenda); }},
+      {k:'tarikhTawaran', t:'Tarikh Kompaun', sortir:true, lebar:'7.42%'},
+      {k:'status', t:'Status', sortir:true, lebar:'7.77%', sel:function(r){ return bdg(r.status, r.status==='Bayar'?'hijau':r.status==='Tertunggak'?'merah':r.status==='Batal'?'kelabu':r.status==='Rayuan'?'kuning':r.status==='Belum Bayar'?'merah':'biru'); }}
     ]
   },
 
   'ies/sita': {
-    modul:'IES', id:'jad-ies-sita', wadah:URS_SITA, saiz:8,
+    modul:'IES', id:'jad-ies-sita', wadah:URS_SITA, saiz:10,
     tajuk:'Penyitaan',
-    huraian:'Pendaftaran penyitaan barang ikut URS MBSJ (PD-04/PD-05) — kod sita, kos sitaan dan stor sitaan.',
-    nota:'Kod Rampasan / Sita / Tunda, Kos Sitaan dan Stor Sitaan diselenggara di <b>Penyelenggaraan</b> modul (PY-08/09/10).',
-    janaId:function(){ return 'STA-2601-' + String(9 + URS_SITA.length).padStart(4,'0'); },
+    janaId:function(){ return 'STA-2601-' + String(6 + URS_SITA.length + 1).padStart(4,'0'); },
     ursMedan:function(){ return ursMedanPenyitaan(); },
     cari:['id','noSita','namaPesalah','barangSita','storSitaan'],
     tapis:[{id:'status',label:'Status',pilihan:['Disita','Dilepaskan','Dilelong','Musnah','Menunggu Pengesahan']},
            {id:'kodSita',label:'Kod',pilihan:['SITA','RAMPAS','TUNDA']}],
     kolum:[
-      {k:'noSita', t:'No. Sita', sortir:true, kelas:'kod utama2'},
-      {k:'kodSita', t:'Kod', sortir:true},
-      {k:'tarikhSita', t:'Tarikh', sortir:true},
-      {k:'namaPesalah', t:'Nama Pesalah', sortir:true},
-      {k:'barangSita', t:'Barang Disita', sortir:true},
-      {k:'kuantiti', t:'Kuantiti'},
-      {k:'kosSitaan', t:'Kos Sitaan', sortir:true, kelas:'kanan', nilai:function(r){ return Number(r.kosSitaan); }, sel:function(r){ return wang(r.kosSitaan); }},
-      {k:'storSitaan', t:'Stor', sortir:true},
-      {k:'status', t:'Status', sortir:true, sel:function(r){ return bdg(r.status, r.status==='Disita'?'biru':r.status==='Dilepaskan'?'hijau':r.status==='Musnah'?'kelabu':'kuning'); }}
+      {k:'noSita', t:'No. Sita', sortir:true, kelas:'kod utama2', lebar:'9.19%'},
+      {k:'kodSita', t:'Kod', sortir:true, lebar:'5.92%'},
+      {k:'tarikhSita', t:'Tarikh', sortir:true, lebar:'7.42%'},
+      {k:'namaPesalah', t:'Nama Pesalah', sortir:true, lebar:'14.93%'},
+      {k:'barangSita', t:'Barang Disita', sortir:true, potong:true, lebar:'11.48%'},
+      {k:'kuantiti', t:'Kuantiti', lebar:'5.92%'},
+      {k:'kosSitaan', t:'Kos Sitaan', sortir:true, kelas:'kanan', lebar:'8.22%', nilai:function(r){ return Number(r.kosSitaan); }, sel:function(r){ return wang(r.kosSitaan); }},
+      {k:'storSitaan', t:'Stor', sortir:true, lebar:'9.54%'},
+      {k:'status', t:'Status', sortir:true, lebar:'13.43%', sel:function(r){ return bdg(r.status, r.status==='Disita'?'biru':r.status==='Dilepaskan'?'hijau':r.status==='Musnah'?'kelabu':'kuning'); }}
     ]
   }
 });
@@ -6588,8 +6942,7 @@ function lukisModul(){
   /* --- bar atas modul --- */
   const it = carianItemModul(m, NAV_MODUL);
   document.getElementById('mpAtas').innerHTML =
-      '<div class="mp-crumb"><span>Portal</span><i>/</i><b>'+esc(m.kod)+'</b><i>/</i><b>'+esc(it ? it.nama : '')+'</b></div>'
-    + '<div class="mp-above">'
+      '<div class="mp-above">'
     +   '<button type="button" class="mp-loceng" data-nav="notifikasi" title="Notifikasi">'+ico(I.loceng,15)+'<span class="lencana merah">3</span></button>'
     +   '<span class="mp-lencana">'+esc(penggunaSemasa())+'</span>'
     +   '<button type="button" class="btn kecil" data-modul-kembali="1">'+ico(I.kembali,14)+'Portal</button>'
@@ -6607,6 +6960,14 @@ function lukisModul(){
     const entiti = it && it.entiti;
     bekas.innerHTML = entiti ? crud(entiti) : '<div class="nota-panel">'+ico(I.amaran)+'<span>Bahagian ini akan dibina.</span></div>';
   }
+  /* Remah navigasi modul: DALAM kandungan, bawah tajuk (ikut rujukan). */
+  const tajukModul = bekas.querySelector('.kepala');
+  const htmlRemahModul = remah([{teks:'Portal', aksi:'portal'},
+      {teks:m.kod, aksi:'modul', kod:MODUL_AKTIF},
+      {teks:(it ? it.nama : '')}], 'mp-crumb');
+  if(tajukModul) tajukModul.insertAdjacentHTML('afterend', htmlRemahModul);
+  else bekas.insertAdjacentHTML('afterbegin', htmlRemahModul);
+
   if(window.__dotfield) window.__dotfield.setTema(document.documentElement.getAttribute('data-tema') || 'gelap');
   document.querySelectorAll('[data-set-tema]').forEach(function(b){
     b.setAttribute('aria-pressed', String(b.dataset.setTema === (document.documentElement.getAttribute('data-tema')||'gelap')));
@@ -6892,10 +7253,11 @@ function bukaBorangUrs(entitiId, idRekod){
 
 /* Panel "Carian Maklumat" ikut URS — 6 medan carian pesalah. */
 function carianMaklumatUrs(idEntiti){
-  return '<div class="panel panel-carian-urs">'
-    + '<div class="kepala-carian">'+ico(I.cari,15)+'<b>Carian Maklumat</b>'
-    + '<span class="nota-kecil">Cari pesalah dahulu sebelum daftar baharu (arahan URS)</span></div>'
-    + '<div class="borang-grid">'
+  /* Alat sekali-sekala — jangan rampas separuh skrin. Tertutup asal. */
+  return '<details class="panel panel-carian-urs">'
+    + '<summary class="kepala-carian">'+ico(I.cari,15)+'<b>Cari pesalah sedia ada</b>'
+    + '<i class="kanan"></i></summary>'
+    + '<div class="borang-grid" data-grid="3">'
     +   '<div class="medan-borang"><label>No. Kad Pengenalan</label><input type="text" id="cuIc" placeholder="900101015523" /></div>'
     +   '<div class="medan-borang"><label>Id. Pelanggan</label><input type="text" id="cuPel" placeholder="CUST-000123" /></div>'
     +   '<div class="medan-borang"><label>Nama Pelanggan</label><input type="text" id="cuNama" placeholder="Nama pesalah / syarikat" /></div>'
@@ -6906,10 +7268,9 @@ function carianMaklumatUrs(idEntiti){
     + '<div class="aksi-carian">'
     +   '<button type="button" class="btn btn-utama2" data-urs-cari="'+esc(idEntiti)+'">'+ico(I.cari,15)+'Cari</button>'
     +   '<button type="button" class="btn kecil" data-urs-cari-reset="'+esc(idEntiti)+'">Set Semula</button>'
-    +   '<button type="button" class="btn btn-utama2 hujung" data-crud-tambah="'+esc(idEntiti)+'">'+ico(I.tambah,15)+'Daftar Pesalah Baharu</button>'
     + '</div>'
-    + '<p class="nota-kecil" id="cuHasil">Masukkan sekurang-kurangnya satu maklumat carian.</p>'
-    + '</div>';
+    + '<p class="nota-kecil" id="cuHasil"></p>'
+    + '</div></details>';
 }
 
 /* Tukar jenis kompaun -> bina semula seksyen medan, kekalkan nilai yang sempat diisi. */
@@ -6958,7 +7319,7 @@ function ursCarian(idEntiti){
   const el = document.getElementById(e.id);
   if(el){ const panel = el.closest('.panel'); if(panel) panel.outerHTML = binaJadual(e.id); }
   const hasil = document.getElementById('cuHasil');
-  if(hasil) hasil.innerHTML = '<b>'+padan.length+' rekod padan.</b> Klik <b>Daftar Pesalah Baharu</b> jika tiada rekod — pendaftaran akan dipautkan ke rekod sedia ada jika carian sepadan.';
+  if(hasil) hasil.innerHTML = '<b>'+padan.length+' rekod padan.</b>';
   auditC('read', e.modul + ' / ' + e.tajuk, '—', q);
 }
 
@@ -7025,6 +7386,19 @@ function senaraiTunda(){
 ================================================================== */
 /* Togol tema — DELEGASI (butang sidebar portal DAN modul dicipta/dilukis semula,
    jadi listener terus pada butang akan hilang). Ini punca togol modul tak berfungsi. */
+/* --- remah navigasi: pautan breadcrumb boleh klik --- */
+document.addEventListener('click', function(e){
+  const ra = e.target.closest('[data-remah-aksi]');
+  if(ra){
+    e.preventDefault();
+    const aksi = ra.getAttribute('data-remah-aksi');
+    if(aksi === 'portal'){ tutupModul(); return; }
+    if(aksi === 'modul'){ bukaModul(ra.getAttribute('data-remah-kod')); return; }
+  }
+  const rn = e.target.closest('[data-remah-nav]');
+  if(rn){ e.preventDefault(); navigasi(rn.getAttribute('data-remah-nav')); return; }
+});
+
 document.addEventListener('click', function(e){
   const tb = e.target.closest('[data-set-tema]');
   if(tb){ e.preventDefault(); pakaiTema(tb.getAttribute('data-set-tema')); return; }
@@ -7190,9 +7564,9 @@ const TAJUK = {
   laporan:'Laporan', audit:'Audit Trail', tetapan:'Tetapan',
   'penyelenggaraan-pengguna':'Penyelenggaraan › Pengguna & Capaian',
   'penyelenggaraan-peranti':'Penyelenggaraan › Peranti',
-  'penyelenggaraan-kod':'Penyelenggaraan › Kod Kompaun / Akta / Kesalahan',
+  'penyelenggaraan-kod':'Penyelenggaraan › Kod Kompaun · Akta · Kesalahan',
   'penyelenggaraan-kenderaan':'Penyelenggaraan › Jenis & Model Kenderaan',
-  'penyelenggaraan-zon':'Penyelenggaraan › Zon / Sektor',
+  'penyelenggaraan-zon':'Penyelenggaraan › Zon · Sektor',
   'penyelenggaraan-alamat':'Penyelenggaraan › Alamat',
   'penyelenggaraan-peringatan':'Penyelenggaraan › Level Peringatan',
   'penyelenggaraan-diskaun':'Penyelenggaraan › Diskaun & Kempen',
@@ -7214,6 +7588,43 @@ function tunjukHalaman(nama){
   window.scrollTo(0,0);
 }
 
+/* ---------- REMAH NAVIGASI (breadcrumb) ----------
+   items: {teks, nav}            -> pautan halaman portal (data-remah-nav)
+          {teks, aksi, kod}      -> aksi 'portal' (balik portal) | 'modul' (buka modul)
+          item terakhir          -> halaman semasa (aria-current, tak diklik)
+   esc() dipakai pada teks; atribut data-* guna pemalar dalaman sahaja. */
+function remah(items, kelas){
+  return '<nav class="remah' + (kelas ? ' ' + kelas : '') + '" aria-label="Jejak navigasi">'
+    + items.map(function(it, i){
+        var akhir = (i === items.length - 1);
+        var isi;
+        if(akhir){
+          isi = '<b aria-current="page">' + esc(it.teks) + '</b>';
+        } else if(it.aksi){
+          isi = '<a href="#" data-remah-aksi="' + esc(it.aksi) + '"'
+              + (it.kod ? ' data-remah-kod="' + esc(it.kod) + '"' : '') + '>'
+              + esc(it.teks) + '</a>';
+        } else if(it.nav){
+          isi = '<a href="#" data-remah-nav="' + esc(it.nav) + '">' + esc(it.teks) + '</a>';
+        } else {
+          isi = '<span>' + esc(it.teks) + '</span>';
+        }
+        return (i ? '<i class="pisah" aria-hidden="true">/</i>' : '') + isi;
+      }).join('')
+    + '</nav>';
+}
+
+/* Remah halaman PORTAL. TAJUK dengan '\u203a' dipecah jadi beberapa level. */
+function remahPortal(nama){
+  /* Dashboard = akar hierarki: tiada remah (elak remah satu item yang kosong makna). */
+  if(nama === 'utama') return '';
+  var bahagian = String(TAJUK[nama] || nama).split('\u203a')
+        .map(function(s){ return s.trim(); }).filter(Boolean);
+  var items = [{teks:'Laman Utama', nav:'utama'}];
+  bahagian.forEach(function(t){ items.push({teks:t}); });
+  return remah(items, 'kedudukan');
+}
+
 /* ---------- render halaman semasa ke dalam #isi ---------- */
 function lukisSemasa(){
   /* Bila modul terbuka, refresh kena pergi ke #mpIsi, bukan #isi portal. */
@@ -7225,10 +7636,13 @@ function lukisSemasa(){
   document.querySelectorAll('.nav-sisi a[data-nav]').forEach(function(a){
     a.classList.toggle('aktif', a.dataset.nav === HALAMAN_SEMASA);
   });
-  const crumb = document.querySelector('.bar-atas .kedudukan');
-  if(crumb){
-    crumb.innerHTML = '<span>Laman Utama</span><span class="pisah">/</span><b>'
-      + esc(TAJUK[HALAMAN_SEMASA] || HALAMAN_SEMASA) + '</b>';
+  /* Remah navigasi diletak DALAM kandungan, tepat BAWAH tajuk halaman
+     (ikut rujukan) — bukan dalam header. */
+  const tajukKandungan = bekas.querySelector('.kepala');
+  const htmlRemah = remahPortal(HALAMAN_SEMASA);
+  if(htmlRemah){
+    if(tajukKandungan) tajukKandungan.insertAdjacentHTML('afterend', htmlRemah);
+    else bekas.insertAdjacentHTML('afterbegin', htmlRemah);
   }
   const aktif = document.querySelector('.nav-sub a.aktif');
   if(aktif){
