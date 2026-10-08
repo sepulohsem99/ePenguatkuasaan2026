@@ -1,0 +1,21 @@
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Bahan rujukan client — JANGAN commit
+URS dari syafeq/
+*.docx
+*.doc
+*.pdf
+*.xlsx
+*.xls
+*.pptx
+
+# Video kerja
+_video/
+*.mp4
