@@ -5380,17 +5380,6 @@ const MODUL = {
       {tajuk:'Susulan', item:[
         {nav:'rayuan',          nama:'Rayuan & Pembatalan',       entiti:'ies/rayuan',        teks:'Rayuan, pengurangan, pembatalan'}
       ]},
-      {tajuk:'Selaras Maklumat', item:[
-        {nav:'selaras-pengguna',nama:'Selaras Pengguna Apps',     entiti:'ies/selaras-pengguna', teks:'Akaun penguatkuasa dengan peranti'},
-        {nav:'pelesen',         nama:'Selaras Maklumat Pelesen',  entiti:'ies/pelesen',       teks:'Pelesen lesen PBT'},
-        {nav:'barang-sita',     nama:'Selaras Maklumat Barang Sita',entiti:'ies/barang-sita', teks:'Kamus barang yang boleh disita'},
-        {nav:'warna',           nama:'Selaras Maklumat Warna',    entiti:'ies/warna',         teks:'Warna piawai cetakan'}
-      ]},
-      {tajuk:'Tetapan', item:[
-        {nav:'ipal',            nama:'Tetapan Alamat IP',         entiti:'ies/ipal',          teks:'Rangkaian dan pelayan'},
-        {nav:'pelbagai',        nama:'Tetapan Pelbagai',          entiti:'ies/pelbagai',      teks:'Tetapan global dan peranti'},
-        {nav:'skrin-utama',     nama:'Tetapan Skrin Utama',       entiti:'ies/skrin-utama',   teks:'Susunan menu handheld'}
-      ]},
       {tajuk:'Penyelenggaraan Kompaun', item:[
         {nav:'peranti-penguatkuasa', nama:'Daftar Peranti Penguatkuasa', entiti:'ies/peranti-penguatkuasa', teks:'Peranti operasi lapangan'},
         {nav:'pengguna-peranti',     nama:'Daftar Pengguna Peranti',     entiti:'ies/pengguna-peranti',     teks:'Padanan penguatkuasa dengan peranti'},
@@ -5601,57 +5590,12 @@ const ITCS_TUNTUTAN = [
 
 /* ============================ IES — data ============================ */
 
-const IES_IPAL = [
-  {id:'IP001', rangkaian:'Pejabat Penguatkuasaan', alamatIp:'10.20.1.0/24', geti:'10.20.1.1', pelayan:'10.20.1.10', status:'Aktif'},
-  {id:'IP002', rangkaian:'Depoh Kenderaan',        alamatIp:'10.20.2.0/24', geti:'10.20.2.1', pelayan:'10.20.1.10', status:'Aktif'},
-  {id:'IP003', rangkaian:'Zon Rondaan Lapangan',   alamatIp:'10.20.3.0/24', geti:'10.20.3.1', pelayan:'10.20.1.10', status:'Aktif'},
-  {id:'IP004', rangkaian:'Wifi Tetamu',            alamatIp:'192.168.50.0/24',geti:'192.168.50.1',pelayan:'—',       status:'Tidak Aktif'}
-];
 
-const IES_PELBAGAI = [
-  {id:'PLB001', kunci:'Kod PBT',            nilai:'MBPG',       jenis:'Global',  status:'Aktif'},
-  {id:'PLB002', kunci:'Versi Aplikasi',     nilai:'2.1.23',     jenis:'Global',  status:'Aktif'},
-  {id:'PLB003', kunci:'Zon Operasi',        nilai:'PG01,PG02,PG03,PG04,PG05', jenis:'Global', status:'Aktif'},
-  {id:'PLB004', kunci:'Cetakan Auto',       nilai:'Khidmat',    jenis:'Peranti', status:'Aktif'},
-  {id:'PLB005', kunci:'Had Gambar Bukti',   nilai:'5',          jenis:'Peranti', status:'Aktif'}
-];
 
-const IES_SELARAS_PENGGUNA = [
-  {id:'SPU001', pengguna:'Ahmad Zaki',   noKakitangan:'PG1021', peranti:'ULF-0001', unit:'Zon PG01', tarikh:'2026-10-01', status:'Diselaras'},
-  {id:'SPU002', pengguna:'Rizal Hamid',  noKakitangan:'PG1033', peranti:'ULF-0002', unit:'Zon PG02', tarikh:'2026-10-01', status:'Diselaras'},
-  {id:'SPU003', pengguna:'Suresh Kumar', noKakitangan:'PG1044', peranti:'ULF-0003', unit:'Zon PG03', tarikh:'2026-09-28', status:'Menunggu'},
-  {id:'SPU004', pengguna:'Lim Wei Sheng',noKakitangan:'PG1055', peranti:'ULF-0004', unit:'Zon PG01', tarikh:'2026-09-28', status:'Diselaras'}
-];
 
-const IES_WARNA = [
-  {id:'WRN001', nama:'Warna Notis Amaran', kod:'#F2C200', jenis:'Notis',   status:'Aktif'},
-  {id:'WRN002', nama:'Warna Salinan PBT',  kod:'#2F6FA8', jenis:'Cetakan', status:'Aktif'},
-  {id:'WRN003', nama:'Warna Salinan Pesalah',kod:'#C0392B',jenis:'Cetakan',status:'Aktif'},
-  {id:'WRN004', nama:'Warna Batal',        kod:'#7A818F', jenis:'Cetakan', status:'Tidak Aktif'}
-];
 
-const IES_PELESEN = [
-  {id:'PLS001', noPelesen:'MPPG/LES/2024/0012', nama:'Restoran Sri Mutiara',  premis:'Jalan Bandar 3',   jenis:'Lesen Premis', status:'Aktif'},
-  {id:'PLS002', noPelesen:'MPPG/LES/2024/0088', nama:'Kedai Dobi Bersih',     premis:'Taman Mawar',      jenis:'Lesen Premis', status:'Aktif'},
-  {id:'PLS003', noPelesen:'MPPG/LES/2025/0041', nama:'Bengkel Motor Jaya',    premis:'Jalan Industri 8', jenis:'Lesen Premis', status:'Aktif'},
-  {id:'PLS004', noPelesen:'MPPG/LES/2023/0210', nama:'Pasar Mini Ah Hock',    premis:'Kampung Pasir Putih',jenis:'Lesen Pergigian',status:'Tidak Aktif'}
-];
 
-const IES_BARANG_SITA = [
-  {id:'BST001', nama:'Meja Plastik Kali',    kategori:'Perabot',   unit:'3 buah', nilai:90,  status:'Aktif'},
-  {id:'BST002', nama:'Peti Ais 2 Pintu',     kategori:'Elektrik',  unit:'1 unit', nilai:650, status:'Aktif'},
-  {id:'BST003', nama:'Kanopi Lipat',         kategori:'Struktur',  unit:'2 set',  nilai:240, status:'Aktif'},
-  {id:'BST004', nama:'Mesin Pemotong Rumput',kategori:'Jentera',   unit:'1 unit', nilai:400, status:'Tidak Aktif'}
-];
 
-const IES_SKRIN = [
-  {id:'SKR001', susunan:1, nama:'Notis Amaran',    piktogram:'AMAR', status:'Aktif'},
-  {id:'SKR002', susunan:2, nama:'Kompaun Pelbagai',piktogram:'PKBL', status:'Aktif'},
-  {id:'SKR003', susunan:3, nama:'Kompaun Trafik',  piktogram:'PKTR', status:'Aktif'},
-  {id:'SKR004', susunan:4, nama:'Kompaun Lesen',   piktogram:'PKLS', status:'Aktif'},
-  {id:'SKR005', susunan:5, nama:'Sitaan',          piktogram:'STA',  status:'Aktif'},
-  {id:'SKR006', susunan:6, nama:'Hantar Semula',   piktogram:'HNT',  status:'Tidak Aktif'}
-];
 
 const IES_HANTAR = [
   {id:'HNT00001', jenis:'Notis Amaran',     rekod:'WRW00041', peranti:'ULF-0001', gambar:3, cubaan:1, tarikh:'2026-10-05', status:'Berjaya'},
@@ -5659,6 +5603,12 @@ const IES_HANTAR = [
   {id:'HNT00003', jenis:'Kompaun Letak Kereta', rekod:'PG001K2610009', peranti:'ULF-0003', gambar:2, cubaan:3, tarikh:'2026-10-04', status:'Gagal'},
   {id:'HNT00004', jenis:'Sitaan',           rekod:'STA-2601-0007', peranti:'ULF-0004', gambar:4, cubaan:1, tarikh:'2026-10-04', status:'Berjaya'}
 ];
+
+/* Senarai pilihan untuk BORANG (dulu ambil dari menu mobile yang telah dibuang).
+   Menu 'Selaras Maklumat Warna' / 'Barang Sita' dibuang kerana ia hanya ada dalam
+   aplikasi mobile, tetapi dropdown borang masih perlukan pilihan ini. */
+const PILIHAN_WARNA_KENDERAAN = ['Putih','Hitam','Kelabu','Perak','Merah','Biru','Hijau','Kuning','Coklat','Emas','Ungu','Oren'];
+const PILIHAN_BARANG_SITA = ['Meja','Kerusi','Kanopi','Peti Ais','Mesin','Perabot','Elektrik','Struktur','Jentera','Lain-lain'];
 
 /* --- ENTITI baharu ITCS + IES --- */
 Object.assign(ENTITI, {
@@ -5826,87 +5776,12 @@ Object.assign(ENTITI, {
 
   /* ------------------------------ IES ------------------------------ */
 
-  'ies/ipal': entR({key:'ies/ipal', prefix:'IP', modul:'IES', wadah:IES_IPAL,
-    tajuk:'Tetapan Alamat IP', huraian:'Rangkaian dan alamat pelayan untuk penyelarasan peranti lapangan.',
-    kolum:[{k:'id',t:'ID',sortir:true,kelas:'kod'},{k:'rangkaian',t:'Rangkaian',sortir:true,kelas:'utama2'},
-           {k:'alamatIp',t:'Alamat IP',kelas:'kod'},{k:'geti',t:'Geti',kelas:'kod'},
-           {k:'pelayan',t:'Pelayan',kelas:'kod'},
-           {k:'status',t:'Status',sel:function(r){return bdg(r.status, r.status==='Aktif'?'hijau':'kelabu');}}],
-    medan:[{k:'rangkaian',t:'Nama Rangkaian',jenis:'teks',wajib:true,lebar:2},
-           {k:'alamatIp',t:'Alamat IP / Subnet',jenis:'teks',wajib:true,contoh:'10.20.1.0/24'},
-           {k:'geti',t:'Geti',jenis:'teks',contoh:'10.20.1.1'},
-           {k:'pelayan',t:'Pelayan',jenis:'teks',contoh:'10.20.1.10'},
-           {k:'status',t:'Status',jenis:'pilihan',pilihan:['Aktif','Tidak Aktif'],asal:'Aktif'}]}),
 
-  'ies/pelbagai': entR({key:'ies/pelbagai', prefix:'PLB', modul:'IES', wadah:IES_PELBAGAI,
-    tajuk:'Tetapan Pelbagai', huraian:'Tetapan global dan peranti aplikasi KOMPAUN e-PBT.',
-    kolum:[{k:'id',t:'ID',sortir:true,kelas:'kod'},{k:'kunci',t:'Kunci Tetapan',sortir:true,kelas:'utama2'},
-           {k:'nilai',t:'Nilai',sortir:true},{k:'jenis',t:'Jenis',sortir:true},
-           {k:'status',t:'Status',sel:function(r){return bdg(r.status, r.status==='Aktif'?'hijau':'kelabu');}}],
-    medan:[{k:'kunci',t:'Kunci Tetapan',jenis:'teks',wajib:true,lebar:2,contoh:'Versi Aplikasi'},
-           {k:'nilai',t:'Nilai',jenis:'teks',wajib:true,lebar:2},
-           {k:'jenis',t:'Jenis',jenis:'pilihan',pilihan:['Global','Peranti'],asal:'Global'},
-           {k:'status',t:'Status',jenis:'pilihan',pilihan:['Aktif','Tidak Aktif'],asal:'Aktif'}]}),
 
-  'ies/selaras-pengguna': entR({key:'ies/selaras-pengguna', prefix:'SPU', modul:'IES', wadah:IES_SELARAS_PENGGUNA,
-    tajuk:'Selaras Pengguna Apps', huraian:'Penyelarasan akaun penguatkuasa dengan peranti handheld yang dikeluarkan.',
-    kolum:[{k:'id',t:'ID',sortir:true,kelas:'kod'},{k:'pengguna',t:'Nama Pengguna',sortir:true,kelas:'utama2'},
-           {k:'noKakitangan',t:'No. Kakitangan',sortir:true,kelas:'kod'},
-           {k:'peranti',t:'Peranti',sortir:true,kelas:'kod'},{k:'unit',t:'Unit / Zon',sortir:true},
-           {k:'tarikh',t:'Tarikh Selaras',sortir:true},
-           {k:'status',t:'Status',sel:function(r){return bdg(r.status, r.status==='Diselaras'?'hijau':'kuning');}}],
-    medan:[{k:'pengguna',t:'Nama Pengguna',jenis:'teks',wajib:true,lebar:2},
-           {k:'noKakitangan',t:'No. Kakitangan',jenis:'teks',wajib:true,contoh:'PG1021'},
-           {k:'peranti',t:'Peranti',jenis:'teks',contoh:'ULF-0001'},
-           {k:'unit',t:'Unit / Zon',jenis:'teks',contoh:'Zon PG01'},
-           {k:'tarikh',t:'Tarikh Selaras',jenis:'tarikh',wajib:true},
-           {k:'status',t:'Status',jenis:'pilihan',pilihan:['Diselaras','Menunggu'],asal:'Menunggu'}]}),
 
-  'ies/warna': entR({key:'ies/warna', prefix:'WRN', modul:'IES', wadah:IES_WARNA,
-    tajuk:'Selaras Maklumat Warna', huraian:'Warna piawai cetakan notis, salinan PBT dan salinan pesalah.',
-    kolum:[{k:'id',t:'ID',sortir:true,kelas:'kod'},{k:'nama',t:'Nama Warna',sortir:true,kelas:'utama2'},
-           {k:'kod',t:'Kod Warna',kelas:'kod'},{k:'jenis',t:'Jenis',sortir:true},
-           {k:'status',t:'Status',sel:function(r){return bdg(r.status, r.status==='Aktif'?'hijau':'kelabu');}}],
-    medan:[{k:'nama',t:'Nama Warna',jenis:'teks',wajib:true,lebar:2,contoh:'Warna Notis Amaran'},
-           {k:'kod',t:'Kod Warna (HEX)',jenis:'teks',wajib:true,contoh:'#F2C200'},
-           {k:'jenis',t:'Jenis',jenis:'pilihan',pilihan:['Notis','Cetakan'],asal:'Cetakan'},
-           {k:'status',t:'Status',jenis:'pilihan',pilihan:['Aktif','Tidak Aktif'],asal:'Aktif'}]}),
 
-  'ies/pelesen': entR({key:'ies/pelesen', prefix:'PLS', modul:'IES', wadah:IES_PELESEN,
-    tajuk:'Selaras Maklumat Pelesen', huraian:'Maklumat pelesen lesen PBT — rujukan bagi kompaun kesalahan lesen.',
-    kolum:[{k:'id',t:'ID',sortir:true,kelas:'kod'},{k:'noPelesen',t:'No. Pelesen',sortir:true,kelas:'kod utama2'},
-           {k:'nama',t:'Nama Pelesen / Premis',sortir:true},{k:'premis',t:'Lokasi Premis',sortir:true},
-           {k:'jenis',t:'Jenis Lesen',sortir:true},
-           {k:'status',t:'Status',sel:function(r){return bdg(r.status, r.status==='Aktif'?'hijau':'kelabu');}}],
-    medan:[{k:'noPelesen',t:'No. Pelesen',jenis:'teks',wajib:true,contoh:'MPPG/LES/2024/0012'},
-           {k:'nama',t:'Nama Pelesen / Premis',jenis:'teks',wajib:true,lebar:2},
-           {k:'premis',t:'Lokasi Premis',jenis:'teks',lebar:2},
-           {k:'jenis',t:'Jenis Lesen',jenis:'pilihan',pilihan:['Lesen Premis','Lesen Pergigian','Lesen Anjing','Lesen Hiburan'],asal:'Lesen Premis'},
-           {k:'status',t:'Status',jenis:'pilihan',pilihan:['Aktif','Tidak Aktif'],asal:'Aktif'}]}),
 
-  'ies/barang-sita': entR({key:'ies/barang-sita', prefix:'BST', modul:'IES', wadah:IES_BARANG_SITA,
-    tajuk:'Selaras Maklumat Barang Sita', huraian:'Kamus barang yang boleh disita semasa operasi penguatkuasaan.',
-    kolum:[{k:'id',t:'ID',sortir:true,kelas:'kod'},{k:'nama',t:'Nama Barang',sortir:true,kelas:'utama2'},
-           {k:'kategori',t:'Kategori',sortir:true},{k:'unit',t:'Unit',sortir:true},
-           {k:'nilai',t:'Nilai (RM)',kelas:'kanan',sel:function(r){return Number(r.nilai).toLocaleString('en-MY');}},
-           {k:'status',t:'Status',sel:function(r){return bdg(r.status, r.status==='Aktif'?'hijau':'kelabu');}}],
-    medan:[{k:'nama',t:'Nama Barang',jenis:'teks',wajib:true,lebar:2},
-           {k:'kategori',t:'Kategori',jenis:'pilihan',pilihan:['Perabot','Elektrik','Struktur','Jentera','Lain-lain'],asal:'Lain-lain'},
-           {k:'unit',t:'Unit',jenis:'teks',contoh:'1 unit'},
-           {k:'nilai',t:'Anggaran Nilai (RM)',jenis:'nombor',contoh:'400'},
-           {k:'status',t:'Status',jenis:'pilihan',pilihan:['Aktif','Tidak Aktif'],asal:'Aktif'}]}),
 
-  'ies/skrin-utama': entR({key:'ies/skrin-utama', prefix:'SKR', modul:'IES', wadah:IES_SKRIN,
-    tajuk:'Tetapan Skrin Utama', huraian:'Susunan menu pada skrin utama aplikasi handheld penguatkuasa.',
-    kolum:[{k:'id',t:'ID',sortir:true,kelas:'kod'},
-           {k:'susunan',t:'Susunan',sortir:true,kelas:'kanan',nilai:function(r){return Number(r.susunan);}},
-           {k:'nama',t:'Nama Menu',sortir:true,kelas:'utama2'},
-           {k:'piktogram',t:'Piktogram',kelas:'kod'},
-           {k:'status',t:'Status',sel:function(r){return bdg(r.status, r.status==='Aktif'?'hijau':'kelabu');}}],
-    medan:[{k:'susunan',t:'Susunan',jenis:'nombor',wajib:true,contoh:'1'},
-           {k:'nama',t:'Nama Menu',jenis:'teks',wajib:true,lebar:2,contoh:'Notis Amaran'},
-           {k:'piktogram',t:'Piktogram',jenis:'teks',contoh:'AMAR'},
-           {k:'status',t:'Status',jenis:'pilihan',pilihan:['Aktif','Tidak Aktif'],asal:'Aktif'}]}),
 
   'ies/hantar-semula': entR({key:'ies/hantar-semula', prefix:'HNT', modul:'IES', wadah:IES_HANTAR,
     tajuk:'Hantar Semula Data & Gambar', huraian:'Rekod yang gagal diselaras dari peranti ke pengkalan data ePBT.',
@@ -6850,7 +6725,7 @@ function ursMedanTrafik(auto){
       {k:'noKereta',   t:'No. Kereta / Motor', jenis:'teks', wajib:true, contoh:'ABC1002'},
       {k:'noCukaiJalan', t:'No. Cukai Jalan', jenis:'teks'},
       {k:'jenisKereta',t:'Jenis Kereta / Motor', jenis:'pilihan', pilihan:['Kereta','Motosikal','Lori / Trak','Bas','Van'], asal:'Kereta'},
-      {k:'warnaKereta',t:'Warna Kereta / Motor', jenis:'pilihan', pilihan:IES_WARNA.map(function(w){return w.nama.replace('Warna ','');})}
+      {k:'warnaKereta',t:'Warna Kereta / Motor', jenis:'pilihan', pilihan:PILIHAN_WARNA_KENDERAAN}
     ]},
     {tajuk:'Maklumat Lokasi Kesalahan', medan:[
       {k:'tempatKesalahan', t:'Tempat / Lokasi Kesalahan', jenis:'teks', lebar:2},
@@ -6873,7 +6748,7 @@ function ursMedanLetakKereta(auto){
       {k:'noKereta',   t:'No. Kereta / Motor', jenis:'teks', wajib:true, contoh:'ABC1002'},
       {k:'noCukaiJalan', t:'No. Cukai Jalan', jenis:'teks'},
       {k:'jenisKereta',t:'Jenis Kereta / Motor', jenis:'pilihan', pilihan:['Kereta','Motosikal','Lori / Trak','Bas','Van'], asal:'Kereta'},
-      {k:'warnaKereta',t:'Warna Kereta / Motor', jenis:'pilihan', pilihan:IES_WARNA.map(function(w){return w.nama.replace('Warna ','');})},
+      {k:'warnaKereta',t:'Warna Kereta / Motor', jenis:'pilihan', pilihan:PILIHAN_WARNA_KENDERAAN},
       {k:'noPetak',    t:'No. Petak', jenis:'teks', contoh:'P-0231'},
       {k:'noKupon',    t:'No. Kupon', jenis:'teks', contoh:'KPN-889910'},
       {k:'kodPetak',   t:'Kod Petak', jenis:'teks', contoh:'PK-A'}
@@ -6920,7 +6795,7 @@ function ursMedanPenyitaan(){
       {k:'tarikhSita', t:'Tarikh Penyitaan', jenis:'tarikh', wajib:true},
       {k:'masaSita',   t:'Masa Penyitaan (Jam / Minit)', jenis:'teks', contoh:'11:20'},
       {k:'tempatSita', t:'Tempat / Lokasi Penyitaan', jenis:'teks'},
-      {k:'barangSita', t:'Barang Yang Disita', jenis:'pilihan', pilihan:IES_BARANG_SITA.map(function(b){return b.nama;}), wajib:true, lebar:2},
+      {k:'barangSita', t:'Barang Yang Disita', jenis:'pilihan', pilihan:PILIHAN_BARANG_SITA, wajib:true, lebar:2},
       {k:'kuantiti',   t:'Kuantiti / Unit', jenis:'teks', contoh:'3 buah'},
       {k:'kosSitaan',  t:'Kos Sitaan (RM)', jenis:'nombor', contoh:'90'},
       {k:'storSitaan', t:'Stor Sitaan', jenis:'pilihan', pilihan:['Stor Ibu Pejabat','Stor Zon PG01','Stor Zon PG02','Stor Zon PG03'], asal:'Stor Ibu Pejabat'},
