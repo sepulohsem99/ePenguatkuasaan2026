@@ -34,8 +34,7 @@ di bawah satu pintu masuk, satu pangkalan data, satu penyelenggaraan dan satu je
 1. Muat turun `index.html` dan buka dalam pelayar (Chrome/Edge/Firefox).
 2. Log masuk dengan butiran demo:
    - **No. Kad Pengenalan:** `900101-14-5567` (sudah diisi)
-   - **Kata laluan:** `P@ssw0rd` — **taip manual** (autofill kata laluan hanya ada
-     pada salinan local untuk demo pantas; versi awam sengaja tiada).
+   - **Kata laluan:** diperoleh daripada pemilik prototaip (tidak dipaparkan di sini).
 
 ## Screenshot
 

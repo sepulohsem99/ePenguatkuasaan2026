@@ -1830,7 +1830,7 @@ button.pantas-luar:hover{background:var(--kad-bg-2);color:var(--gold-2)}
 
         <div class="nota-demo">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11.4v5M12 7.6v.1"/></svg>
-          <div>Mod prototaip. Untuk demo, masukkan mana-mana <b>No. Kad Pengenalan (12 digit)</b> dan kata laluan dummy <code>P@ssw0rd</code>.</div>
+          <div>Mod prototaip. Masukkan mana-mana <b>No. Kad Pengenalan (12 digit)</b> dan kata laluan yang diberitahu. Kata laluan demo tidak dipaparkan di sini.</div>
         </div>
 
         <p class="kaki">
@@ -7441,7 +7441,7 @@ borang.addEventListener('submit', function(e){
     document.getElementById('ic').focus(); return;
   }
   if(pass !== KATA_LALUAN_DUMMY){
-    tunjukRalat('Kata laluan tidak sah. Untuk prototaip, gunakan P@ssw0rd.');
+    tunjukRalat('Kata laluan tidak sah. Sila semak kata laluan demo anda.');
     document.getElementById('kata-laluan').select(); return;
   }
   if(document.getElementById('ingatSaya').checked){
